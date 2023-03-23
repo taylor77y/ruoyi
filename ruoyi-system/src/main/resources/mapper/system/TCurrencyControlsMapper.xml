@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TCurrencyControlsMapper">
+    
+    <resultMap type="TCurrencyControls" id="TCurrencyControlsResult">
+        <result property="id"    column="id"    />
+        <result property="tokenCur"    column="token_cur"    />
+        <result property="startingPrice"    column="starting_price"    />
+        <result property="finalPrice"    column="final_price"    />
+        <result property="tradingVolumeMax"    column="trading_volume_max"    />
+        <result property="tradingVolumeMin"    column="trading_volume_min"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="openingPrice"    column="opening_price"    />
+        <result property="closingPrice"    column="closing_price"    />
+    </resultMap>
+
+    <sql id="selectTCurrencyControlsVo">
+        select id, token_cur, starting_price, final_price, trading_volume_max, trading_volume_min, status, create_time, update_time, opening_price, closing_price from t_currency_controls
+    </sql>
+
+    <select id="selectTCurrencyControlsList" parameterType="TCurrencyControls" resultMap="TCurrencyControlsResult">
+        <include refid="selectTCurrencyControlsVo"/>
+        <where>  
+            <if test="tokenCur != null  and tokenCur != ''"> and token_cur = #{tokenCur}</if>
+            <if test="startingPrice != null "> and starting_price = #{startingPrice}</if>
+            <if test="finalPrice != null "> and final_price = #{finalPrice}</if>
+            <if test="tradingVolumeMax != null "> and trading_volume_max = #{tradingVolumeMax}</if>
+            <if test="tradingVolumeMin != null "> and trading_volume_min = #{tradingVolumeMin}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="openingPrice != null "> and opening_price = #{openingPrice}</if>
+            <if test="closingPrice != null "> and closing_price = #{closingPrice}</if>
+        </where>
+    </select>
+    
+    <select id="selectTCurrencyControlsById" parameterType="Long" resultMap="TCurrencyControlsResult">
+        <include refid="selectTCurrencyControlsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTCurrencyControls" parameterType="TCurrencyControls" useGeneratedKeys="true" keyProperty="id">
+        insert into t_currency_controls
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tokenCur != null">token_cur,</if>
+            <if test="startingPrice != null">starting_price,</if>
+            <if test="finalPrice != null">final_price,</if>
+            <if test="tradingVolumeMax != null">trading_volume_max,</if>
+            <if test="tradingVolumeMin != null">trading_volume_min,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="openingPrice != null">opening_price,</if>
+            <if test="closingPrice != null">closing_price,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tokenCur != null">#{tokenCur},</if>
+            <if test="startingPrice != null">#{startingPrice},</if>
+            <if test="finalPrice != null">#{finalPrice},</if>
+            <if test="tradingVolumeMax != null">#{tradingVolumeMax},</if>
+            <if test="tradingVolumeMin != null">#{tradingVolumeMin},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="openingPrice != null">#{openingPrice},</if>
+            <if test="closingPrice != null">#{closingPrice},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTCurrencyControls" parameterType="TCurrencyControls">
+        update t_currency_controls
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tokenCur != null">token_cur = #{tokenCur},</if>
+            <if test="startingPrice != null">starting_price = #{startingPrice},</if>
+            <if test="finalPrice != null">final_price = #{finalPrice},</if>
+            <if test="tradingVolumeMax != null">trading_volume_max = #{tradingVolumeMax},</if>
+            <if test="tradingVolumeMin != null">trading_volume_min = #{tradingVolumeMin},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="openingPrice != null">opening_price = #{openingPrice},</if>
+            <if test="closingPrice != null">closing_price = #{closingPrice},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTCurrencyControlsById" parameterType="Long">
+        delete from t_currency_controls where id = #{id}
+    </delete>
+
+    <delete id="deleteTCurrencyControlsByIds" parameterType="String">
+        delete from t_currency_controls where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

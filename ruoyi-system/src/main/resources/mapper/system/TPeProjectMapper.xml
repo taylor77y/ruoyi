@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TPeProjectMapper">
+    
+    <resultMap type="TPeProject" id="TPeProjectResult">
+        <result property="id"    column="id"    />
+        <result property="orderIndex"    column="order_index"    />
+        <result property="projectName"    column="project_name"    />
+        <result property="projectUrl"    column="project_url"    />
+        <result property="projectImg"    column="project_img"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="nowNum"    column="now_num"    />
+        <result property="sumNum"    column="sum_num"    />
+        <result property="minNum"    column="min_num"    />
+        <result property="maxNum"    column="max_num"    />
+        <result property="coinPice"    column="coin_pice"    />
+        <result property="coinName"    column="coin_name"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTPeProjectVo">
+        select id, order_index, project_name, project_url, project_img, start_time, end_time, now_num, sum_num, min_num, max_num, coin_pice, coin_name, status, create_time, update_time from t_pe_project
+    </sql>
+
+    <select id="selectTPeProjectList" parameterType="TPeProject" resultMap="TPeProjectResult">
+        <include refid="selectTPeProjectVo"/>
+        <where>  
+            <if test="orderIndex != null "> and order_index = #{orderIndex}</if>
+            <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
+            <if test="projectUrl != null  and projectUrl != ''"> and project_url = #{projectUrl}</if>
+            <if test="projectImg != null  and projectImg != ''"> and project_img = #{projectImg}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="nowNum != null "> and now_num = #{nowNum}</if>
+            <if test="sumNum != null "> and sum_num = #{sumNum}</if>
+            <if test="minNum != null "> and min_num = #{minNum}</if>
+            <if test="maxNum != null "> and max_num = #{maxNum}</if>
+            <if test="coinPice != null "> and coin_pice = #{coinPice}</if>
+            <if test="coinName != null  and coinName != ''"> and coin_name like concat('%', #{coinName}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectTPeProjectById" parameterType="String" resultMap="TPeProjectResult">
+        <include refid="selectTPeProjectVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTPeProject" parameterType="TPeProject">
+        insert into t_pe_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderIndex != null">order_index,</if>
+            <if test="projectName != null">project_name,</if>
+            <if test="projectUrl != null">project_url,</if>
+            <if test="projectImg != null">project_img,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="nowNum != null">now_num,</if>
+            <if test="sumNum != null">sum_num,</if>
+            <if test="minNum != null">min_num,</if>
+            <if test="maxNum != null">max_num,</if>
+            <if test="coinPice != null">coin_pice,</if>
+            <if test="coinName != null">coin_name,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderIndex != null">#{orderIndex},</if>
+            <if test="projectName != null">#{projectName},</if>
+            <if test="projectUrl != null">#{projectUrl},</if>
+            <if test="projectImg != null">#{projectImg},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="nowNum != null">#{nowNum},</if>
+            <if test="sumNum != null">#{sumNum},</if>
+            <if test="minNum != null">#{minNum},</if>
+            <if test="maxNum != null">#{maxNum},</if>
+            <if test="coinPice != null">#{coinPice},</if>
+            <if test="coinName != null">#{coinName},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTPeProject" parameterType="TPeProject">
+        update t_pe_project
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderIndex != null">order_index = #{orderIndex},</if>
+            <if test="projectName != null">project_name = #{projectName},</if>
+            <if test="projectUrl != null">project_url = #{projectUrl},</if>
+            <if test="projectImg != null">project_img = #{projectImg},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="nowNum != null">now_num = #{nowNum},</if>
+            <if test="sumNum != null">sum_num = #{sumNum},</if>
+            <if test="minNum != null">min_num = #{minNum},</if>
+            <if test="maxNum != null">max_num = #{maxNum},</if>
+            <if test="coinPice != null">coin_pice = #{coinPice},</if>
+            <if test="coinName != null">coin_name = #{coinName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTPeProjectById" parameterType="String">
+        delete from t_pe_project where id = #{id}
+    </delete>
+
+    <delete id="deleteTPeProjectByIds" parameterType="String">
+        delete from t_pe_project where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

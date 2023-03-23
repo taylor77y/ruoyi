@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AmountChangeMapper">
+    
+    <resultMap type="AmountChange" id="AmountChangeResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="amount"    column="amount"    />
+        <result property="type"    column="type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="phone" column="phone"/>
+        <result property="mail" column="mail"/>
+    </resultMap>
+
+    <sql id="selectAmountChangeVo">
+        select a.id, a.member_id, a.amount, a.type, a.create_time,b.phone,b.mail
+        from amount_change a left join t_member b on a.member_id = b.id
+    </sql>
+
+    <select id="selectAmountChangeList" parameterType="AmountChange" resultMap="AmountChangeResult">
+        <include refid="selectAmountChangeVo"/>
+        <where>  
+            <if test="memberId != null  and memberId != ''"> and a.member_id = #{memberId}</if>
+            <if test="amount != null "> and a.amount = #{amount}</if>
+            <if test="type != null "> and a.type = #{type}</if>
+            <if test="phone != null and phone != '' "> and b.phone = #{phone}</if>
+            <if test="type != null and mail != ''"> and b.mail = #{mail}</if>
+            <if test="sysIds != null and sysIds.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="sysIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by a.create_time desc
+    </select>
+    
+    <select id="selectAmountChangeById" parameterType="Long" resultMap="AmountChangeResult">
+        <include refid="selectAmountChangeVo"/>
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertAmountChange" parameterType="AmountChange" useGeneratedKeys="true" keyProperty="id">
+        insert into amount_change
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">member_id,</if>
+            <if test="amount != null">amount,</if>
+            <if test="type != null">type,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="memberId != null">#{memberId},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAmountChange" parameterType="AmountChange">
+        update amount_change
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAmountChangeById" parameterType="Long">
+        delete from amount_change where id = #{id}
+    </delete>
+
+    <delete id="deleteAmountChangeByIds" parameterType="String">
+        delete from amount_change where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

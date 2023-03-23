@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TCoinTokenMapper">
+    
+    <resultMap type="TCoinToken" id="TCoinTokenResult">
+        <result property="id"    column="id"    />
+        <result property="coin"    column="coin"    />
+        <result property="token"    column="token"    />
+        <result property="point"    column="point"    />
+    </resultMap>
+
+    <sql id="selectTCoinTokenVo">
+        select id, coin, token, point from t_coin_token
+    </sql>
+
+    <select id="selectTCoinTokenList" parameterType="TCoinToken" resultMap="TCoinTokenResult">
+        <include refid="selectTCoinTokenVo"/>
+        <where>  
+            <if test="coin != null  and coin != ''"> and coin = #{coin}</if>
+            <if test="token != null  and token != ''"> and token = #{token}</if>
+            <if test="point != null "> and point = #{point}</if>
+        </where>
+    </select>
+    
+    <select id="selectTCoinTokenById" parameterType="String" resultMap="TCoinTokenResult">
+        <include refid="selectTCoinTokenVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTCoinToken" parameterType="TCoinToken">
+        insert into t_coin_token
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="coin != null and coin != ''">coin,</if>
+            <if test="token != null and token != ''">token,</if>
+            <if test="point != null">point,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="coin != null and coin != ''">#{coin},</if>
+            <if test="token != null and token != ''">#{token},</if>
+            <if test="point != null">#{point},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTCoinToken" parameterType="TCoinToken">
+        update t_coin_token
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="coin != null and coin != ''">coin = #{coin},</if>
+            <if test="token != null and token != ''">token = #{token},</if>
+            <if test="point != null">point = #{point},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTCoinTokenById" parameterType="String">
+        delete from t_coin_token where id = #{id}
+    </delete>
+
+    <delete id="deleteTCoinTokenByIds" parameterType="String">
+        delete from t_coin_token where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

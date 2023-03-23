@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TExtractCoinMapper">
+    
+    <resultMap type="TExtractCoin" id="TExtractCoinResult">
+        <result property="id"    column="id"    />
+        <result property="member"    column="member"    />
+        <result property="balance"    column="balance"    />
+        <result property="handlingFee"    column="handling_fee"    />
+        <result property="currency"    column="currency"    />
+        <result property="wallet"    column="wallet"    />
+        <result property="state"    column="state"    />
+        <result property="hex"    column="hex"    />
+        <result property="viewInExplorer"    column="view_in_explorer"    />
+        <result property="fromAddress"    column="from_address"    />
+        <result property="toAddress"    column="to_address"    />
+        <result property="tokenNumber"    column="token_number"    />
+        <result property="extractTime"    column="extract_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="type"    column="type"    />
+        <result property="chainName"    column="chain_name"    />
+        <result property="bankUserName"    column="bank_user_name"    />
+        <result property="bankName"    column="bank_name"    />
+        <result property="bankAddress"    column="bank_address"    />
+        <result property="bankCard"    column="bank_card"    />
+        <result property="exchangeRate"    column="exchange_rate"    />
+        <result property="amount"    column="amount"    />
+        <result property="currencySymbol"    column="currency_symbol"    />
+        <result property="phone" column="phone"/>
+        <result property="mail" column="mail"/>
+        <result property="uuid" column="uuid"/>
+        <result property="lastPhone" column="lastPhone"/>
+        <result property="smName" column="smName"/>
+        <result property="lastSmName" column="lastSmName"/>
+        <result property="useType" column="useType"/>
+    </resultMap>
+
+    <sql id="selectTExtractCoinVo">
+        select
+            a.id, a.member, a.balance, a.handling_fee, a.currency, a.wallet, a.state, a.hex, a.view_in_explorer,
+            a.from_address, a.to_address, a.token_number, a.extract_time, a.update_time, a.create_time,a.type,a.chain_name,
+            a.bank_user_name,a.bank_name,a.bank_address,a.bank_card,a.exchange_rate,a.amount,a.currency_symbol,
+            b.phone,b.mail,b.uuid,c.phone as lastPhone,b.uname as smName,c.uname as lastSmName,b.use_type as useType
+        from t_extract_coin a inner join t_member b on a.member = b.id
+        left join t_member c on c.id = b.wel_member
+    </sql>
+
+    <select id="selectTExtractCoinList" parameterType="TExtractCoin" resultMap="TExtractCoinResult">
+        <include refid="selectTExtractCoinVo"/>
+        <where>  
+<!--            <if test="member != null  and member != ''"> and member = #{member}</if>-->
+<!--            <if test="balance != null "> and balance = #{balance}</if>-->
+<!--            <if test="handlingFee != null "> and handling_fee = #{handlingFee}</if>-->
+<!--            <if test="currency != null  and currency != ''"> and currency = #{currency}</if>-->
+<!--            <if test="wallet != null  and wallet != ''"> and wallet = #{wallet}</if>-->
+<!--            <if test="state != null  and state != ''"> and state = #{state}</if>-->
+<!--            <if test="hex != null  and hex != ''"> and hex = #{hex}</if>-->
+<!--            <if test="viewInExplorer != null  and viewInExplorer != ''"> and view_in_explorer = #{viewInExplorer}</if>-->
+<!--            <if test="fromAddress != null  and fromAddress != ''"> and from_address = #{fromAddress}</if>-->
+<!--            <if test="toAddress != null  and toAddress != ''"> and to_address = #{toAddress}</if>-->
+<!--            <if test="tokenNumber != null  and tokenNumber != ''"> and token_number = #{tokenNumber}</if>-->
+<!--            <if test="extractTime != null "> and extract_time = #{extractTime}</if>-->
+            <if test="phone != null  and phone != ''"> and b.phone = #{phone}</if>
+            <if test="mail != null  and mail != ''"> and b.mail = #{mail}</if>
+            <if test="uuid != null  and uuid != ''"> and b.uuid = #{uuid}</if>
+            <if test="lastPhone != null  and lastPhone != ''"> and c.phone = #{lastPhone}</if>
+            <if test="lastSmName != null  and lastSmName != ''"> and c.uname = #{lastSmName}</if>
+            <if test="sysIds != null and sysIds != ''">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="sysIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by a.create_time desc
+    </select>
+    
+    <select id="selectTExtractCoinById" parameterType="String" resultMap="TExtractCoinResult">
+        <include refid="selectTExtractCoinVo"/>
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertTExtractCoin" parameterType="TExtractCoin">
+        insert into t_extract_coin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="member != null">member,</if>
+            <if test="balance != null">balance,</if>
+            <if test="handlingFee != null">handling_fee,</if>
+            <if test="currency != null">currency,</if>
+            <if test="wallet != null">wallet,</if>
+            <if test="state != null">state,</if>
+            <if test="hex != null and hex != ''">hex,</if>
+            <if test="viewInExplorer != null and viewInExplorer != ''">view_in_explorer,</if>
+            <if test="fromAddress != null and fromAddress != ''">from_address,</if>
+            <if test="toAddress != null and toAddress != ''">to_address,</if>
+            <if test="tokenNumber != null and tokenNumber != ''">token_number,</if>
+            <if test="extractTime != null">extract_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="member != null">#{member},</if>
+            <if test="balance != null">#{balance},</if>
+            <if test="handlingFee != null">#{handlingFee},</if>
+            <if test="currency != null">#{currency},</if>
+            <if test="wallet != null">#{wallet},</if>
+            <if test="state != null">#{state},</if>
+            <if test="hex != null and hex != ''">#{hex},</if>
+            <if test="viewInExplorer != null and viewInExplorer != ''">#{viewInExplorer},</if>
+            <if test="fromAddress != null and fromAddress != ''">#{fromAddress},</if>
+            <if test="toAddress != null and toAddress != ''">#{toAddress},</if>
+            <if test="tokenNumber != null and tokenNumber != ''">#{tokenNumber},</if>
+            <if test="extractTime != null">#{extractTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTExtractCoin" parameterType="TExtractCoin">
+        update t_extract_coin
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="member != null">member = #{member},</if>
+            <if test="balance != null">balance = #{balance},</if>
+            <if test="handlingFee != null">handling_fee = #{handlingFee},</if>
+            <if test="currency != null">currency = #{currency},</if>
+            <if test="wallet != null">wallet = #{wallet},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="hex != null and hex != ''">hex = #{hex},</if>
+            <if test="viewInExplorer != null and viewInExplorer != ''">view_in_explorer = #{viewInExplorer},</if>
+            <if test="fromAddress != null and fromAddress != ''">from_address = #{fromAddress},</if>
+            <if test="toAddress != null and toAddress != ''">to_address = #{toAddress},</if>
+            <if test="tokenNumber != null and tokenNumber != ''">token_number = #{tokenNumber},</if>
+            <if test="extractTime != null">extract_time = #{extractTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTExtractCoinById" parameterType="String">
+        delete from t_extract_coin where id = #{id}
+    </delete>
+
+    <delete id="deleteTExtractCoinByIds" parameterType="String">
+        delete from t_extract_coin where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

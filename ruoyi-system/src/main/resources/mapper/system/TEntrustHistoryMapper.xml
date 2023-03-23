@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TEntrustHistoryMapper">
+    
+    <resultMap type="TEntrustHistory" id="TEntrustHistoryResult">
+        <result property="id"    column="id"    />
+        <result property="pairs"    column="pairs"    />
+        <result property="mainCur"    column="main_cur"    />
+        <result property="tokenCur"    column="token_cur"    />
+        <result property="pairsName"    column="pairs_name"    />
+        <result property="price"    column="price"    />
+        <result property="matchPrice"    column="match_price"    />
+        <result property="count"    column="count"    />
+        <result property="percentageCount"    column="percentage_count"    />
+        <result property="matchCount"    column="match_count"    />
+        <result property="surplusCount"    column="surplus_count"    />
+        <result property="member"    column="member"    />
+        <result property="memberType"    column="member_type"    />
+        <result property="tradeRate"    column="trade_rate"    />
+        <result property="entrustType"    column="entrust_type"    />
+        <result property="methodType"    column="method_type"    />
+        <result property="priceType"    column="price_type"    />
+        <result property="state"    column="state"    />
+        <result property="tradeFee"    column="trade_fee"    />
+        <result property="matchMember"    column="match_member"    />
+        <result property="matchFee"    column="match_fee"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="phone" column="phone"/>
+        <result property="mail" column="mail"/>
+        <result property="matchPhone" column="match_phone"/>
+    </resultMap>
+
+<!--    <sql id="selectTEntrustHistoryVo">-->
+<!--        select id, pairs, main_cur, token_cur, pairs_name, price, match_price, count, percentage_count, match_count, surplus_count, member, member_type, trade_rate, entrust_type, method_type, price_type, state, trade_fee, match_member, match_fee, create_time, update_time from t_entrust_history-->
+<!--    </sql>-->
+    <sql id="selectTEntrustHistoryVo">
+        select
+               a.*,b.phone,b.mail,c.phone as match_phone
+        from t_entrust_history a left join t_member b on a.member = b.id
+            left join t_member c on a.match_member = c.id
+    </sql>
+
+    <select id="selectTEntrustHistoryList" parameterType="TEntrustHistory" resultMap="TEntrustHistoryResult">
+        <include refid="selectTEntrustHistoryVo"/>
+        <where>  
+<!--            <if test="pairs != null  and pairs != ''"> and pairs = #{pairs}</if>-->
+<!--            <if test="mainCur != null  and mainCur != ''"> and main_cur = #{mainCur}</if>-->
+<!--            <if test="tokenCur != null  and tokenCur != ''"> and token_cur = #{tokenCur}</if>-->
+            <if test="pairsName != null  and pairsName != ''"> and a.pairs_name like concat('%', #{pairsName}, '%')</if>
+<!--            <if test="price != null "> and price = #{price}</if>-->
+<!--            <if test="matchPrice != null "> and match_price = #{matchPrice}</if>-->
+<!--            <if test="count != null "> and count = #{count}</if>-->
+<!--            <if test="percentageCount != null "> and percentage_count = #{percentageCount}</if>-->
+<!--            <if test="matchCount != null "> and match_count = #{matchCount}</if>-->
+<!--            <if test="surplusCount != null "> and surplus_count = #{surplusCount}</if>-->
+<!--            <if test="member != null  and member != ''"> and member = #{member}</if>-->
+<!--            <if test="memberType != null  and memberType != ''"> and member_type = #{memberType}</if>-->
+<!--            <if test="tradeRate != null "> and trade_rate = #{tradeRate}</if>-->
+<!--            <if test="entrustType != null  and entrustType != ''"> and entrust_type = #{entrustType}</if>-->
+<!--            <if test="methodType != null  and methodType != ''"> and method_type = #{methodType}</if>-->
+<!--            <if test="priceType != null  and priceType != ''"> and price_type = #{priceType}</if>-->
+<!--            <if test="state != null  and state != ''"> and state = #{state}</if>-->
+<!--            <if test="tradeFee != null "> and trade_fee = #{tradeFee}</if>-->
+<!--            <if test="matchMember != null  and matchMember != ''"> and match_member = #{matchMember}</if>-->
+<!--            <if test="matchFee != null "> and match_fee = #{matchFee}</if>-->
+            <if test="phone != null  and phone != ''"> and b.phone like concat('%', #{phone}, '%')</if>
+            <if test="mail != null  and mail != ''"> and b.mail like concat('%', #{mail}, '%')</if>
+            <if test="uuid != null  and uuid != ''"> and b.uuid like concat('%', #{uuid}, '%')</if>
+            <if test="sysIds != null and sysIds.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="sysIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by a.create_time desc
+    </select>
+    
+    <select id="selectTEntrustHistoryById" parameterType="String" resultMap="TEntrustHistoryResult">
+        <include refid="selectTEntrustHistoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTEntrustHistory" parameterType="TEntrustHistory">
+        insert into t_entrust_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="pairs != null">pairs,</if>
+            <if test="mainCur != null">main_cur,</if>
+            <if test="tokenCur != null">token_cur,</if>
+            <if test="pairsName != null">pairs_name,</if>
+            <if test="price != null">price,</if>
+            <if test="matchPrice != null">match_price,</if>
+            <if test="count != null">count,</if>
+            <if test="percentageCount != null">percentage_count,</if>
+            <if test="matchCount != null">match_count,</if>
+            <if test="surplusCount != null">surplus_count,</if>
+            <if test="member != null">member,</if>
+            <if test="memberType != null">member_type,</if>
+            <if test="tradeRate != null">trade_rate,</if>
+            <if test="entrustType != null">entrust_type,</if>
+            <if test="methodType != null">method_type,</if>
+            <if test="priceType != null">price_type,</if>
+            <if test="state != null">state,</if>
+            <if test="tradeFee != null">trade_fee,</if>
+            <if test="matchMember != null">match_member,</if>
+            <if test="matchFee != null">match_fee,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="pairs != null">#{pairs},</if>
+            <if test="mainCur != null">#{mainCur},</if>
+            <if test="tokenCur != null">#{tokenCur},</if>
+            <if test="pairsName != null">#{pairsName},</if>
+            <if test="price != null">#{price},</if>
+            <if test="matchPrice != null">#{matchPrice},</if>
+            <if test="count != null">#{count},</if>
+            <if test="percentageCount != null">#{percentageCount},</if>
+            <if test="matchCount != null">#{matchCount},</if>
+            <if test="surplusCount != null">#{surplusCount},</if>
+            <if test="member != null">#{member},</if>
+            <if test="memberType != null">#{memberType},</if>
+            <if test="tradeRate != null">#{tradeRate},</if>
+            <if test="entrustType != null">#{entrustType},</if>
+            <if test="methodType != null">#{methodType},</if>
+            <if test="priceType != null">#{priceType},</if>
+            <if test="state != null">#{state},</if>
+            <if test="tradeFee != null">#{tradeFee},</if>
+            <if test="matchMember != null">#{matchMember},</if>
+            <if test="matchFee != null">#{matchFee},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTEntrustHistory" parameterType="TEntrustHistory">
+        update t_entrust_history
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pairs != null">pairs = #{pairs},</if>
+            <if test="mainCur != null">main_cur = #{mainCur},</if>
+            <if test="tokenCur != null">token_cur = #{tokenCur},</if>
+            <if test="pairsName != null">pairs_name = #{pairsName},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="matchPrice != null">match_price = #{matchPrice},</if>
+            <if test="count != null">count = #{count},</if>
+            <if test="percentageCount != null">percentage_count = #{percentageCount},</if>
+            <if test="matchCount != null">match_count = #{matchCount},</if>
+            <if test="surplusCount != null">surplus_count = #{surplusCount},</if>
+            <if test="member != null">member = #{member},</if>
+            <if test="memberType != null">member_type = #{memberType},</if>
+            <if test="tradeRate != null">trade_rate = #{tradeRate},</if>
+            <if test="entrustType != null">entrust_type = #{entrustType},</if>
+            <if test="methodType != null">method_type = #{methodType},</if>
+            <if test="priceType != null">price_type = #{priceType},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="tradeFee != null">trade_fee = #{tradeFee},</if>
+            <if test="matchMember != null">match_member = #{matchMember},</if>
+            <if test="matchFee != null">match_fee = #{matchFee},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTEntrustHistoryById" parameterType="String">
+        delete from t_entrust_history where id = #{id}
+    </delete>
+
+    <delete id="deleteTEntrustHistoryByIds" parameterType="String">
+        delete from t_entrust_history where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

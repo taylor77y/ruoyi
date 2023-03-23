@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TWalletPoolMapper">
+    
+    <resultMap type="TWalletPool" id="TWalletPoolResult">
+        <result property="id"    column="id"    />
+        <result property="address"    column="address"    />
+        <result property="password"    column="password"    />
+        <result property="member"    column="member"    />
+        <result property="coin"    column="coin"    />
+        <result property="usdtBalance"    column="usdt_balance"    />
+        <result property="ethBalance"    column="eth_balance"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTWalletPoolVo">
+        select
+               a.id, a.address, a.password, b.phone as member, a.coin,
+               a.usdt_balance, a.eth_balance, a.create_time
+        from t_wallet_pool a left join t_member b on a.member = b.id
+    </sql>
+
+    <select id="selectTWalletPoolList" parameterType="TWalletPool" resultMap="TWalletPoolResult">
+        <include refid="selectTWalletPoolVo"/>
+        <where>  
+            <if test="address != null  and address != ''"> and a.address = #{address}</if>
+            <if test="password != null  and password != ''"> and a.password = #{password}</if>
+            <if test="member != null  and member != ''"> and a.member = #{member}</if>
+            <if test="coin != null  and coin != ''"> and a.coin = #{coin}</if>
+            <if test="usdtBalance != null "> and a.usdt_balance = #{usdtBalance}</if>
+            <if test="ethBalance != null "> and a.eth_balance = #{ethBalance}</if>
+        </where>
+    </select>
+    
+    <select id="selectTWalletPoolById" parameterType="String" resultMap="TWalletPoolResult">
+        <include refid="selectTWalletPoolVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTWalletPool" parameterType="TWalletPool">
+        insert into t_wallet_pool
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="address != null">address,</if>
+            <if test="password != null">password,</if>
+            <if test="member != null">member,</if>
+            <if test="coin != null">coin,</if>
+            <if test="usdtBalance != null">usdt_balance,</if>
+            <if test="ethBalance != null">eth_balance,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="address != null">#{address},</if>
+            <if test="password != null">#{password},</if>
+            <if test="member != null">#{member},</if>
+            <if test="coin != null">#{coin},</if>
+            <if test="usdtBalance != null">#{usdtBalance},</if>
+            <if test="ethBalance != null">#{ethBalance},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTWalletPool" parameterType="TWalletPool">
+        update t_wallet_pool
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="address != null">address = #{address},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="member != null">member = #{member},</if>
+            <if test="coin != null">coin = #{coin},</if>
+            <if test="usdtBalance != null">usdt_balance = #{usdtBalance},</if>
+            <if test="ethBalance != null">eth_balance = #{ethBalance},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTWalletPoolById" parameterType="String">
+        delete from t_wallet_pool where id = #{id}
+    </delete>
+
+    <delete id="deleteTWalletPoolByIds" parameterType="String">
+        delete from t_wallet_pool where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

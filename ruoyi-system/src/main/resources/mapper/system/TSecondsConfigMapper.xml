@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TSecondsConfigMapper">
+    
+    <resultMap type="TSecondsConfig" id="TSecondsConfigResult">
+        <result property="id"    column="id"    />
+        <result property="seconds"    column="seconds"    />
+        <result property="secondsTime"    column="seconds_time"    />
+        <result property="minimum"    column="minimum"    />
+        <result property="odds"    column="odds"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="sort"    column="sort"    />
+    </resultMap>
+
+    <sql id="selectTSecondsConfigVo">
+        select id, seconds, seconds_time, minimum, odds, create_time, sort from t_seconds_config
+    </sql>
+
+    <select id="selectTSecondsConfigList" parameterType="TSecondsConfig" resultMap="TSecondsConfigResult">
+        <include refid="selectTSecondsConfigVo"/>
+        <where>  
+            <if test="seconds != null "> and seconds = #{seconds}</if>
+            <if test="secondsTime != null  and secondsTime != ''"> and seconds_time = #{secondsTime}</if>
+            <if test="minimum != null "> and minimum = #{minimum}</if>
+            <if test="odds != null "> and odds = #{odds}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+        </where>
+    </select>
+    
+    <select id="selectTSecondsConfigById" parameterType="Long" resultMap="TSecondsConfigResult">
+        <include refid="selectTSecondsConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTSecondsConfig" parameterType="TSecondsConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into t_seconds_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="seconds != null">seconds,</if>
+            <if test="secondsTime != null">seconds_time,</if>
+            <if test="minimum != null">minimum,</if>
+            <if test="odds != null">odds,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="sort != null">sort,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="seconds != null">#{seconds},</if>
+            <if test="secondsTime != null">#{secondsTime},</if>
+            <if test="minimum != null">#{minimum},</if>
+            <if test="odds != null">#{odds},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="sort != null">#{sort},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTSecondsConfig" parameterType="TSecondsConfig">
+        update t_seconds_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="seconds != null">seconds = #{seconds},</if>
+            <if test="secondsTime != null">seconds_time = #{secondsTime},</if>
+            <if test="minimum != null">minimum = #{minimum},</if>
+            <if test="odds != null">odds = #{odds},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="sort != null">sort = #{sort},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTSecondsConfigById" parameterType="Long">
+        delete from t_seconds_config where id = #{id}
+    </delete>
+
+    <delete id="deleteTSecondsConfigByIds" parameterType="String">
+        delete from t_seconds_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

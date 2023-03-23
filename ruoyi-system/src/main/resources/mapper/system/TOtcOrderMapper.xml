@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TOtcOrderMapper">
+    
+    <resultMap type="TOtcOrder" id="TOtcOrderResult">
+        <result property="id"    column="id"    />
+        <result property="member"    column="member"    />
+        <result property="memberFbName"    column="member_fb_name"    />
+        <result property="currency"    column="currency"    />
+        <result property="num"    column="num"    />
+        <result property="upDownNumber"    column="up_down_number"    />
+        <result property="minPrice"    column="min_price"    />
+        <result property="extremum"    column="extremum"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="direction"    column="direction"    />
+        <result property="payType"    column="pay_type"    />
+        <result property="status"    column="status"    />
+        <result property="autoStatus"    column="auto_status"    />
+        <result property="autoMsg"    column="auto_msg"    />
+        <result property="freeze"    column="freeze"    />
+        <result property="dealNum"    column="deal_num"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="mccId" column="mcc_id"/>
+        <result property="isUp" column="is_up"/>
+        <result property="phone" column="phone"/>
+        <result property="mail" column="mail"/>
+        <result property="mccName" column="mccName"/>
+    </resultMap>
+
+    <sql id="selectTOtcOrderVo">
+        select
+            tod.id, tod.member, tod.member_fb_name, tod.currency, tod.num, tod.up_down_number,
+            tod.min_price, tod.extremum, tod.remarks, tod.direction, tod.pay_type, tod.status,
+            tod.auto_status, tod.auto_msg, tod.freeze, tod.deal_num, tod.create_time, tod.update_time,tod.mcc_id,tod.is_up,
+               m.phone,m.mail,
+               (select currency_name from t_member_currency_config where id = tod.mcc_id) as mccName
+        from t_otc_order tod inner join t_member m on tod.member = m.id
+    </sql>
+
+    <select id="selectTOtcOrderList" parameterType="TOtcOrder" resultMap="TOtcOrderResult">
+        <include refid="selectTOtcOrderVo"/>
+        <where>  
+            <if test="member != null  and member != ''"> and tod.member = #{member}</if>
+            <if test="memberFbName != null  and memberFbName != ''"> and tod.member_fb_name like concat('%', #{memberFbName}, '%')</if>
+            <if test="currency != null  and currency != ''"> and tod.currency = #{currency}</if>
+            <if test="num != null "> and tod.num = #{num}</if>
+            <if test="upDownNumber != null "> and tod.up_down_number = #{upDownNumber}</if>
+            <if test="minPrice != null "> and tod.min_price = #{minPrice}</if>
+            <if test="extremum != null "> and tod.extremum = #{extremum}</if>
+            <if test="remarks != null  and remarks != ''"> and tod.remarks = #{remarks}</if>
+            <if test="direction != null  and direction != ''"> and tod.direction = #{direction}</if>
+            <if test="payType != null  and payType != ''"> and tod.pay_type = #{payType}</if>
+            <if test="status != null  and status != ''"> and tod.status = #{status}</if>
+            <if test="autoStatus != null  and autoStatus != ''"> and tod.auto_status = #{autoStatus}</if>
+            <if test="autoMsg != null  and autoMsg != ''"> and tod.auto_msg = #{autoMsg}</if>
+            <if test="freeze != null "> and tod.freeze = #{freeze}</if>
+            <if test="dealNum != null "> and tod.deal_num = #{dealNum}</if>
+            <if test="phone != null"> and m.phone = #{phone}</if>
+            <if test="mail != null"> and m.mail = #{mail}</if>
+            <if test="sysIds != null and sysIds != ''">
+                and m.sys_id in
+                <foreach item="item" index="index" collection="sysIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by tod.create_time desc
+    </select>
+    
+    <select id="selectTOtcOrderById" parameterType="String" resultMap="TOtcOrderResult">
+        <include refid="selectTOtcOrderVo"/>
+        where tod.id = #{id}
+    </select>
+        
+    <insert id="insertTOtcOrder" parameterType="TOtcOrder">
+        insert into t_otc_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="member != null and member != ''">member,</if>
+            <if test="memberFbName != null">member_fb_name,</if>
+            <if test="currency != null and currency != ''">currency,</if>
+            <if test="num != null">num,</if>
+            <if test="upDownNumber != null">up_down_number,</if>
+            <if test="minPrice != null">min_price,</if>
+            <if test="extremum != null">extremum,</if>
+            <if test="remarks != null">remarks,</if>
+            <if test="direction != null and direction != ''">direction,</if>
+            <if test="payType != null and payType != ''">pay_type,</if>
+            <if test="status != null">status,</if>
+            <if test="autoStatus != null">auto_status,</if>
+            <if test="autoMsg != null">auto_msg,</if>
+            <if test="freeze != null">freeze,</if>
+            <if test="dealNum != null">deal_num,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="mccId != null">mcc_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="member != null and member != ''">#{member},</if>
+            <if test="memberFbName != null">#{memberFbName},</if>
+            <if test="currency != null and currency != ''">#{currency},</if>
+            <if test="num != null">#{num},</if>
+            <if test="upDownNumber != null">#{upDownNumber},</if>
+            <if test="minPrice != null">#{minPrice},</if>
+            <if test="extremum != null">#{extremum},</if>
+            <if test="remarks != null">#{remarks},</if>
+            <if test="direction != null and direction != ''">#{direction},</if>
+            <if test="payType != null and payType != ''">#{payType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="autoStatus != null">#{autoStatus},</if>
+            <if test="autoMsg != null">#{autoMsg},</if>
+            <if test="freeze != null">#{freeze},</if>
+            <if test="dealNum != null">#{dealNum},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="mccId != null">#{mccId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTOtcOrder" parameterType="TOtcOrder">
+        update t_otc_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="member != null and member != ''">member = #{member},</if>
+            <if test="memberFbName != null">member_fb_name = #{memberFbName},</if>
+            <if test="currency != null and currency != ''">currency = #{currency},</if>
+            <if test="num != null">num = #{num},</if>
+            <if test="upDownNumber != null">up_down_number = #{upDownNumber},</if>
+            <if test="minPrice != null">min_price = #{minPrice},</if>
+            <if test="extremum != null">extremum = #{extremum},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="direction != null and direction != ''">direction = #{direction},</if>
+            <if test="payType != null and payType != ''">pay_type = #{payType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="autoStatus != null">auto_status = #{autoStatus},</if>
+            <if test="autoMsg != null">auto_msg = #{autoMsg},</if>
+            <if test="freeze != null">freeze = #{freeze},</if>
+            <if test="dealNum != null">deal_num = #{dealNum},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="mccId != null">mcc_id = #{mccId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTOtcOrderById" parameterType="String">
+        delete from t_otc_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTOtcOrderByIds" parameterType="String">
+        delete from t_otc_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TFabiDayRecordMapper">
+    
+    <resultMap type="TFabiDayRecord" id="TFabiDayRecordResult">
+        <result property="id"    column="id"    />
+        <result property="currency"    column="currency"    />
+        <result property="sumBuy"    column="sum_buy"    />
+        <result property="sumSell"    column="sum_sell"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTFabiDayRecordVo">
+        select id, currency, sum_buy, sum_sell, create_time from t_fabi_day_record
+    </sql>
+
+    <select id="selectTFabiDayRecordList" parameterType="TFabiDayRecord" resultMap="TFabiDayRecordResult">
+        <include refid="selectTFabiDayRecordVo"/>
+        <where>  
+            <if test="currency != null  and currency != ''"> and currency = #{currency}</if>
+            <if test="sumBuy != null "> and sum_buy = #{sumBuy}</if>
+            <if test="sumSell != null "> and sum_sell = #{sumSell}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectTFabiDayRecordById" parameterType="Long" resultMap="TFabiDayRecordResult">
+        <include refid="selectTFabiDayRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTFabiDayRecord" parameterType="TFabiDayRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into t_fabi_day_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="currency != null">currency,</if>
+            <if test="sumBuy != null">sum_buy,</if>
+            <if test="sumSell != null">sum_sell,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="currency != null">#{currency},</if>
+            <if test="sumBuy != null">#{sumBuy},</if>
+            <if test="sumSell != null">#{sumSell},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTFabiDayRecord" parameterType="TFabiDayRecord">
+        update t_fabi_day_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="currency != null">currency = #{currency},</if>
+            <if test="sumBuy != null">sum_buy = #{sumBuy},</if>
+            <if test="sumSell != null">sum_sell = #{sumSell},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTFabiDayRecordById" parameterType="Long">
+        delete from t_fabi_day_record where id = #{id}
+    </delete>
+
+    <delete id="deleteTFabiDayRecordByIds" parameterType="String">
+        delete from t_fabi_day_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

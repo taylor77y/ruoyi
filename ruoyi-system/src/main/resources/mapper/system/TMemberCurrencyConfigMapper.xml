@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TMemberCurrencyConfigMapper">
+    
+    <resultMap type="TMemberCurrencyConfig" id="TMemberCurrencyConfigResult">
+        <result property="id"    column="id"    />
+        <result property="currencyName"    column="currency_name"    />
+        <result property="rate"    column="rate"    />
+        <result property="mark"    column="mark"    />
+        <result property="sort"    column="sort"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTMemberCurrencyConfigVo">
+        select id, currency_name, rate, mark, sort, create_time from t_member_currency_config
+    </sql>
+
+    <select id="selectTMemberCurrencyConfigList" parameterType="TMemberCurrencyConfig" resultMap="TMemberCurrencyConfigResult">
+        <include refid="selectTMemberCurrencyConfigVo"/>
+        <where>  
+            <if test="currencyName != null  and currencyName != ''"> and currency_name like concat('%', #{currencyName}, '%')</if>
+            <if test="rate != null "> and rate = #{rate}</if>
+            <if test="mark != null  and mark != ''"> and mark = #{mark}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+        </where>
+        order by sort asc
+    </select>
+    
+    <select id="selectTMemberCurrencyConfigById" parameterType="Long" resultMap="TMemberCurrencyConfigResult">
+        <include refid="selectTMemberCurrencyConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTMemberCurrencyConfig" parameterType="TMemberCurrencyConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into t_member_currency_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="currencyName != null and currencyName != ''">currency_name,</if>
+            <if test="rate != null">rate,</if>
+            <if test="mark != null and mark != ''">mark,</if>
+            <if test="sort != null">sort,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="currencyName != null and currencyName != ''">#{currencyName},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="mark != null and mark != ''">#{mark},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTMemberCurrencyConfig" parameterType="TMemberCurrencyConfig">
+        update t_member_currency_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="currencyName != null and currencyName != ''">currency_name = #{currencyName},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="mark != null and mark != ''">mark = #{mark},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTMemberCurrencyConfigById" parameterType="Long">
+        delete from t_member_currency_config where id = #{id}
+    </delete>
+
+    <delete id="deleteTMemberCurrencyConfigByIds" parameterType="String">
+        delete from t_member_currency_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

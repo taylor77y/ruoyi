@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TStagePriceMapper">
+
+    <resultMap type="TStagePrice" id="TStagePriceResult">
+        <result property="id"    column="id"    />
+        <result property="tokenCur"    column="token_cur"    />
+        <result property="timeType"    column="time_type"    />
+        <result property="high"    column="high"    />
+        <result property="low"    column="low"    />
+        <result property="volume"    column="volume"    />
+        <result property="vol"    column="vol"    />
+        <result property="count"    column="count"    />
+        <result property="open"    column="open"    />
+        <result property="close"    column="close"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTStagePriceVo">
+        select id, token_cur, time_type, high, low, volume, vol, count, open, close, status, create_time from t_stage_price
+    </sql>
+
+    <select id="selectTStagePriceList" parameterType="TStagePrice" resultMap="TStagePriceResult">
+        <include refid="selectTStagePriceVo"/>
+        <where>
+            <if test="tokenCur != null  and tokenCur != ''"> and token_cur = #{tokenCur}</if>
+            <if test="timeType != null  and timeType != ''"> and time_type = #{timeType}</if>
+            <if test="high != null "> and high = #{high}</if>
+            <if test="low != null "> and low = #{low}</if>
+            <if test="volume != null "> and volume = #{volume}</if>
+            <if test="vol != null "> and vol = #{vol}</if>
+            <if test="count != null "> and count = #{count}</if>
+            <if test="open != null "> and open = #{open}</if>
+            <if test="close != null "> and close = #{close}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+        order by create_time asc
+    </select>
+
+    <select id="selectTStagePriceById" parameterType="Long" resultMap="TStagePriceResult">
+        <include refid="selectTStagePriceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTStagePrice" parameterType="TStagePrice" useGeneratedKeys="true" keyProperty="id">
+        insert into t_stage_price
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tokenCur != null">token_cur,</if>
+            <if test="timeType != null">time_type,</if>
+            <if test="high != null">high,</if>
+            <if test="low != null">low,</if>
+            <if test="volume != null">volume,</if>
+            <if test="vol != null">vol,</if>
+            <if test="count != null">count,</if>
+            <if test="open != null">open,</if>
+            <if test="close != null">close,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tokenCur != null">#{tokenCur},</if>
+            <if test="timeType != null">#{timeType},</if>
+            <if test="high != null">#{high},</if>
+            <if test="low != null">#{low},</if>
+            <if test="volume != null">#{volume},</if>
+            <if test="vol != null">#{vol},</if>
+            <if test="count != null">#{count},</if>
+            <if test="open != null">#{open},</if>
+            <if test="close != null">#{close},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTStagePrice" parameterType="TStagePrice">
+        update t_stage_price
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tokenCur != null">token_cur = #{tokenCur},</if>
+            <if test="timeType != null">time_type = #{timeType},</if>
+            <if test="high != null">high = #{high},</if>
+            <if test="low != null">low = #{low},</if>
+            <if test="volume != null">volume = #{volume},</if>
+            <if test="vol != null">vol = #{vol},</if>
+            <if test="count != null">count = #{count},</if>
+            <if test="open != null">open = #{open},</if>
+            <if test="close != null">close = #{close},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTStagePriceById" parameterType="Long">
+        delete from t_stage_price where id = #{id}
+    </delete>
+
+    <delete id="deleteTStagePriceByIds" parameterType="String">
+        delete from t_stage_price where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="delete">
+        delete from t_stage_price where token_cur=#{tokenCur}
+    </delete>
+    <select id="findByTokenCur" resultMap="TStagePriceResult">
+        <include refid="selectTStagePriceVo"/>
+        where token_cur = #{tokenCur} limit 1
+    </select>
+
+    <update id="updateObj">
+        update t_stage_price
+        set ${key} = ${val}
+        where token_cur = #{tokenCur} and status = 1
+        <if test="list != null and list.size>0 ">
+            and id in
+            <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </update>
+    <update id="updateObj2">
+        update t_stage_price
+        set ${key} = ${val}
+        where token_cur = #{tokenCur} and time_type = #{time} and status = 1
+    </update>
+</mapper>

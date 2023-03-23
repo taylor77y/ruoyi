@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CensusMapper">
+
+    <select id="zcMemberCount" resultType="java.lang.Long">
+        select count(0) from t_member
+        <where>
+            <if test="mode != null">
+                and date_format(create_time,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
+            </if>
+            <if test="list != null and list.size>0">
+                and sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and use_type = 1
+        </where>
+    </select>
+
+    <select id="recharge" resultType="java.math.BigDecimal">
+        select
+               ifnull(sum(a.amount),0)
+        from t_member_recharge a left join t_member b on a.member_id = b.id
+        <where>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
+            <if test="mode != null">
+                and date_format(a.update_time,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
+            </if>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and b.use_type = 1
+        </where>
+    </select>
+    <select id="withdraw" resultType="java.math.BigDecimal">
+        select
+               ifnull(sum(a.balance),0)
+        from t_extract_coin a left join t_member b on a.member = b.id
+        <where>
+            <if test="state != null">
+                and a.state = #{state}
+            </if>
+            <if test="mode != null">
+                and date_format(a.update_time,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
+            </if>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and b.use_type = 1
+        </where>
+    </select>
+
+    <select id="rechargeCount" resultType="java.lang.Long">
+        select count(0)
+        from t_member_recharge a left join t_member b on a.member_id = b.id
+        <where>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
+            <if test="mode != null">
+                and date_format(a.update_time,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
+            </if>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and b.use_type = 1
+        </where>
+    </select>
+    <select id="withdrawCount" resultType="java.lang.Long">
+        select count(0) from t_extract_coin a left join t_member b on a.member = b.id
+        <where>
+            <if test="state != null">
+                and a.state = #{state}
+            </if>
+            <if test="mode != null">
+                and date_format(a.update_time,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
+            </if>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and b.use_type = 1
+        </where>
+    </select>
+    <select id="memberCount" resultType="java.lang.Long">
+        select count(0) from t_member
+        <where>
+            <if test="list != null and list.size>0">
+                and sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and card_state = 'WAIT' and use_type = 1
+        </where>
+    </select>
+
+    <select id="fbCount" resultType="java.lang.Long">
+        select
+               count(0)
+        from t_otc_order_price a inner join t_member b on a.user_id = b.id
+        <where>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and b.use_type = 1
+        </where>
+    </select>
+
+    <select id="fbAmountTotalPrice" resultType="java.math.BigDecimal">
+        select
+               ifnull(sum(a.num),0)
+        from t_otc_order_price a inner join t_member b on a.user_id = b.id
+        <where>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
+            <if test="mode != null">
+                and date_format(a.update_time,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
+            </if>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and b.use_type = 1 and a.user_direction = "BUY"
+        </where>
+    </select>
+    <select id="fbAmountPrice" resultType="java.math.BigDecimal">
+        select
+               ifnull(sum(a.num),0)
+        from t_otc_order_price a inner join t_member b on a.user_id = b.id
+        <where>
+            <if test="status != null">
+                and a.status = #{status}
+            </if>
+            <if test="mode != null">
+                and date_format(a.update_time,'%Y-%m-%d') = date_format(now(),'%Y-%m-%d')
+            </if>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and b.use_type = 1 and a.user_direction = "SELL"
+        </where>
+    </select>
+
+
+
+
+
+
+
+
+
+
+    <select id="approveCount" resultType="com.ruoyi.system.domain.Approve">
+        select * from t_member
+        <where>
+            <if test="list != null and list.size>0">
+                and sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and card_state = 'WAIT'
+        </where>
+        order by update_time desc limit 1
+    </select>
+    <select id="approveCount2" resultType="java.lang.Long">
+        select count(0) from t_member
+        <where>
+            <if test="list != null and list.size>0">
+                and sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and card_state = 'WAIT'
+        </where>
+    </select>
+    <select id="recCount" resultType="com.ruoyi.system.domain.TMemberRecharge">
+        select a.* from t_member_recharge a left join t_member b on a.member_id = b.id
+        <where>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.status = 1
+        </where>
+        order by a.create_time desc limit 1
+    </select>
+    <select id="recCount2" resultType="java.lang.Long">
+        select count(0) from t_member_recharge a left join t_member b on a.member_id = b.id
+        <where>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.status = 1
+        </where>
+    </select>
+    <select id="widCount" resultType="com.ruoyi.system.domain.TExtractCoin">
+        select a.* from t_extract_coin a left join t_member b on a.member = b.id
+        <where>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.state = 'CREATE'
+        </where>
+        order by a.create_time desc limit 1
+    </select>
+    <select id="widCount2" resultType="java.lang.Long">
+        select count(0) from t_extract_coin a left join t_member b on a.member = b.id
+        <where>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.state = 'CREATE'
+        </where>
+    </select>
+
+
+
+    <select id="fbOne" resultType="com.ruoyi.system.domain.TOtcOrderPrice">
+        select * from t_otc_order_price a inner join t_member b on a.user_id = b.id
+        <where>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.status in ("NONPAYMENT","PAYMENT")
+        </where>
+        order by a.create_time desc limit 1
+    </select>
+    <select id="fbOne2" resultType="java.lang.Long">
+        select count(0) from t_otc_order_price a inner join t_member b on a.user_id = b.id
+        <where>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.status in ("NONPAYMENT","PAYMENT")
+        </where>
+    </select>
+
+    <select id="bbOne" resultType="com.ruoyi.system.domain.TEntrust">
+        select * from t_entrust a left join t_member b on a.member = b.id
+        <where>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by a.create_time desc limit 1
+    </select>
+    <select id="bbOne2" resultType="java.lang.Long">
+        select count(0) from t_entrust a left join t_member b on a.member = b.id
+        <where>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+        <select id="mhyOne" resultType="com.ruoyi.system.domain.TSecondsBetLog">
+        select * from t_seconds_bet_log a left join t_member b on a.member_id = b.id
+        <where>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.settle_status = 2
+        </where>
+        order by a.create_time desc limit 1
+    </select>
+    <select id="mhyOne2" resultType="java.lang.Long">
+        select count(0) from t_seconds_bet_log a left join t_member b on a.member_id = b.id
+        <where>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.settle_status = 2
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TKlineDataMapper">
+    
+    <resultMap type="TKlineData" id="TKlineDataResult">
+        <result property="id"    column="id"    />
+        <result property="tokenCur"    column="token_cur"    />
+        <result property="open"    column="open"    />
+        <result property="close"    column="close"    />
+        <result property="low"    column="low"    />
+        <result property="high"    column="high"    />
+        <result property="volume"    column="volume"    />
+        <result property="vol"    column="vol"    />
+        <result property="count"    column="count"    />
+        <result property="price"    column="price"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTKlineDataVo">
+        select id, token_cur, open, close, low, high, volume, vol, count, price, status, create_time from t_kline_data
+    </sql>
+
+    <select id="selectTKlineDataList" parameterType="TKlineData" resultMap="TKlineDataResult">
+        <include refid="selectTKlineDataVo"/>
+        <where>  
+            <if test="tokenCur != null  and tokenCur != ''"> and token_cur = #{tokenCur}</if>
+            <if test="open != null "> and open = #{open}</if>
+            <if test="close != null "> and close = #{close}</if>
+            <if test="low != null "> and low = #{low}</if>
+            <if test="high != null "> and high = #{high}</if>
+            <if test="volume != null "> and volume = #{volume}</if>
+            <if test="vol != null "> and vol = #{vol}</if>
+            <if test="count != null "> and count = #{count}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+        order by create_time asc
+    </select>
+    
+    <select id="selectTKlineDataById" parameterType="Long" resultMap="TKlineDataResult">
+        <include refid="selectTKlineDataVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTKlineData" parameterType="TKlineData" useGeneratedKeys="true" keyProperty="id">
+        insert into t_kline_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="tokenCur != null">token_cur,</if>
+            <if test="open != null">open,</if>
+            <if test="close != null">close,</if>
+            <if test="low != null">low,</if>
+            <if test="high != null">high,</if>
+            <if test="volume != null">volume,</if>
+            <if test="vol != null">vol,</if>
+            <if test="count != null">count,</if>
+            <if test="price != null">price,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="tokenCur != null">#{tokenCur},</if>
+            <if test="open != null">#{open},</if>
+            <if test="close != null">#{close},</if>
+            <if test="low != null">#{low},</if>
+            <if test="high != null">#{high},</if>
+            <if test="volume != null">#{volume},</if>
+            <if test="vol != null">#{vol},</if>
+            <if test="count != null">#{count},</if>
+            <if test="price != null">#{price},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTKlineData" parameterType="TKlineData">
+        update t_kline_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="tokenCur != null">token_cur = #{tokenCur},</if>
+            <if test="open != null">open = #{open},</if>
+            <if test="close != null">close = #{close},</if>
+            <if test="low != null">low = #{low},</if>
+            <if test="high != null">high = #{high},</if>
+            <if test="volume != null">volume = #{volume},</if>
+            <if test="vol != null">vol = #{vol},</if>
+            <if test="count != null">count = #{count},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTKlineDataById" parameterType="Long">
+        delete from t_kline_data where id = #{id}
+    </delete>
+
+    <delete id="deleteTKlineDataByIds" parameterType="String">
+        delete from t_kline_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <delete id="delete">
+        delete from t_kline_data where token_cur=#{tokenCur}
+    </delete>
+
+    <select id="findByTokenCur" resultMap="TKlineDataResult">
+        <include refid="selectTKlineDataVo"/>
+        where token_cur = #{tokenCur} limit 1
+    </select>
+
+    <update id="updateObj">
+        update t_kline_data
+        set ${key} = ${val}
+        where token_cur = #{tokenCur} and status = 1
+    </update>
+</mapper>

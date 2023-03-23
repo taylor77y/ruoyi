@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TUserBlanceCollectMapper">
+    
+    <resultMap type="TUserBlanceCollect" id="TUserBlanceCollectResult">
+        <result property="id"    column="id"    />
+        <result property="member"    column="member"    />
+        <result property="currency"    column="currency"    />
+        <result property="sumChong"    column="sum_chong"    />
+        <result property="sumTi"    column="sum_ti"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="phone" column="phone"/>
+    </resultMap>
+
+    <sql id="selectTUserBlanceCollectVo">
+        select
+            a.id, a.member, a.currency, a.sum_chong, a.sum_ti, a.update_time,b.phone
+        from t_user_blance_collect a left join t_member b on a.member = b.id
+    </sql>
+
+    <select id="selectTUserBlanceCollectList" parameterType="TUserBlanceCollect" resultMap="TUserBlanceCollectResult">
+        <include refid="selectTUserBlanceCollectVo"/>
+        <where>  
+            <if test="member != null  and member != ''"> and a.member = #{member}</if>
+            <if test="currency != null  and currency != ''"> and a.currency = #{currency}</if>
+            <if test="sumChong != null "> and a.sum_chong = #{sumChong}</if>
+            <if test="sumTi != null "> and a.sum_ti = #{sumTi}</if>
+            <if test="phone != null and phone != ''">and b.phone = #{phone}</if>
+            <if test="sysIds != null and sysIds.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="sysIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by a.update_time desc
+    </select>
+    
+    <select id="selectTUserBlanceCollectById" parameterType="Long" resultMap="TUserBlanceCollectResult">
+        <include refid="selectTUserBlanceCollectVo"/>
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertTUserBlanceCollect" parameterType="TUserBlanceCollect" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user_blance_collect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="member != null">member,</if>
+            <if test="currency != null">currency,</if>
+            <if test="sumChong != null">sum_chong,</if>
+            <if test="sumTi != null">sum_ti,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="member != null">#{member},</if>
+            <if test="currency != null">#{currency},</if>
+            <if test="sumChong != null">#{sumChong},</if>
+            <if test="sumTi != null">#{sumTi},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTUserBlanceCollect" parameterType="TUserBlanceCollect">
+        update t_user_blance_collect
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="member != null">member = #{member},</if>
+            <if test="currency != null">currency = #{currency},</if>
+            <if test="sumChong != null">sum_chong = #{sumChong},</if>
+            <if test="sumTi != null">sum_ti = #{sumTi},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTUserBlanceCollectById" parameterType="Long">
+        delete from t_user_blance_collect where id = #{id}
+    </delete>
+
+    <delete id="deleteTUserBlanceCollectByIds" parameterType="String">
+        delete from t_user_blance_collect where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

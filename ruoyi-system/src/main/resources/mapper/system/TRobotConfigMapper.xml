@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TRobotConfigMapper">
+    
+    <resultMap type="TRobotConfig" id="TRobotConfigResult">
+        <result property="id"    column="id"    />
+        <result property="pairName"    column="pair_name"    />
+        <result property="openKine"    column="open_kine"    />
+        <result property="isOpen"    column="is_open"    />
+        <result property="openTape"    column="open_tape"    />
+        <result property="willPrice"    column="will_price"    />
+        <result property="willTime"    column="will_time"    />
+        <result property="bindUser"    column="bind_user"    />
+        <result property="startNum"    column="start_num"    />
+        <result property="endNum"    column="end_num"    />
+        <result property="startPrice"    column="start_price"    />
+        <result property="endPrice"    column="end_price"    />
+        <result property="mendNum"    column="mend_num"    />
+        <result property="mstartNum"    column="mstart_num"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTRobotConfigVo">
+        select id, pair_name, open_kine, is_open, open_tape, will_price, will_time, bind_user, start_num, end_num, start_price, end_price, mend_num, mstart_num, create_time from t_robot_config
+    </sql>
+
+    <select id="selectTRobotConfigList" parameterType="TRobotConfig" resultMap="TRobotConfigResult">
+        <include refid="selectTRobotConfigVo"/>
+        <where>  
+            <if test="pairName != null  and pairName != ''"> and pair_name like concat('%', #{pairName}, '%')</if>
+            <if test="openKine != null  and openKine != ''"> and open_kine = #{openKine}</if>
+            <if test="isOpen != null  and isOpen != ''"> and is_open = #{isOpen}</if>
+            <if test="openTape != null  and openTape != ''"> and open_tape = #{openTape}</if>
+            <if test="willPrice != null "> and will_price = #{willPrice}</if>
+            <if test="willTime != null "> and will_time = #{willTime}</if>
+            <if test="bindUser != null  and bindUser != ''"> and bind_user = #{bindUser}</if>
+            <if test="startNum != null "> and start_num = #{startNum}</if>
+            <if test="endNum != null "> and end_num = #{endNum}</if>
+            <if test="startPrice != null "> and start_price = #{startPrice}</if>
+            <if test="endPrice != null "> and end_price = #{endPrice}</if>
+            <if test="mendNum != null "> and mend_num = #{mendNum}</if>
+            <if test="mstartNum != null "> and mstart_num = #{mstartNum}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectTRobotConfigById" parameterType="String" resultMap="TRobotConfigResult">
+        <include refid="selectTRobotConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTRobotConfig" parameterType="TRobotConfig">
+        insert into t_robot_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="pairName != null">pair_name,</if>
+            <if test="openKine != null">open_kine,</if>
+            <if test="isOpen != null">is_open,</if>
+            <if test="openTape != null">open_tape,</if>
+            <if test="willPrice != null">will_price,</if>
+            <if test="willTime != null">will_time,</if>
+            <if test="bindUser != null">bind_user,</if>
+            <if test="startNum != null">start_num,</if>
+            <if test="endNum != null">end_num,</if>
+            <if test="startPrice != null">start_price,</if>
+            <if test="endPrice != null">end_price,</if>
+            <if test="mendNum != null">mend_num,</if>
+            <if test="mstartNum != null">mstart_num,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="pairName != null">#{pairName},</if>
+            <if test="openKine != null">#{openKine},</if>
+            <if test="isOpen != null">#{isOpen},</if>
+            <if test="openTape != null">#{openTape},</if>
+            <if test="willPrice != null">#{willPrice},</if>
+            <if test="willTime != null">#{willTime},</if>
+            <if test="bindUser != null">#{bindUser},</if>
+            <if test="startNum != null">#{startNum},</if>
+            <if test="endNum != null">#{endNum},</if>
+            <if test="startPrice != null">#{startPrice},</if>
+            <if test="endPrice != null">#{endPrice},</if>
+            <if test="mendNum != null">#{mendNum},</if>
+            <if test="mstartNum != null">#{mstartNum},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTRobotConfig" parameterType="TRobotConfig">
+        update t_robot_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pairName != null">pair_name = #{pairName},</if>
+            <if test="openKine != null">open_kine = #{openKine},</if>
+            <if test="isOpen != null">is_open = #{isOpen},</if>
+            <if test="openTape != null">open_tape = #{openTape},</if>
+            <if test="willPrice != null">will_price = #{willPrice},</if>
+            <if test="willTime != null">will_time = #{willTime},</if>
+            <if test="bindUser != null">bind_user = #{bindUser},</if>
+            <if test="startNum != null">start_num = #{startNum},</if>
+            <if test="endNum != null">end_num = #{endNum},</if>
+            <if test="startPrice != null">start_price = #{startPrice},</if>
+            <if test="endPrice != null">end_price = #{endPrice},</if>
+            <if test="mendNum != null">mend_num = #{mendNum},</if>
+            <if test="mstartNum != null">mstart_num = #{mstartNum},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTRobotConfigById" parameterType="String">
+        delete from t_robot_config where id = #{id}
+    </delete>
+
+    <delete id="deleteTRobotConfigByIds" parameterType="String">
+        delete from t_robot_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TBalanceMapper">
+    
+    <resultMap type="TBalance" id="TBalanceResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="currency"    column="currency"    />
+        <result property="blockedBalance"    column="blocked_balance"    />
+        <result property="balance"    column="balance"    />
+        <result property="assetsBlockedBalance"    column="assets_blocked_balance"    />
+        <result property="assetsBalance"    column="assets_balance"    />
+        <result property="tokenBalance"    column="token_balance"    />
+        <result property="tokenBlockedBalance"    column="token_blocked_balance"    />
+        <result property="fbBalance"    column="fb_balance"    />
+        <result property="fbBlockedBalance"    column="fb_blocked_balance"    />
+        <result property="raiseBalance"    column="raise_balance"    />
+        <result property="chainBalance"    column="chain_balance"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="phone"    column="phone"    />
+        <result property="mail"    column="mail"    />
+    </resultMap>
+
+<!--    <sql id="selectTBalanceVo">-->
+<!--        select id, user_id, currency, blocked_balance, balance, assets_blocked_balance, assets_balance, token_balance, token_blocked_balance, fb_balance, fb_blocked_balance, raise_balance, chain_balance, remarks, create_time, update_time -->
+<!--        from t_balance-->
+<!--    </sql>-->
+    <sql id="selectTBalanceVo">
+        select a.*,b.phone,b.mail
+        from t_balance a left join t_member b on a.user_id = b.id
+    </sql>
+    <select id="selectTBalanceUid" resultMap="TBalanceResult">
+        select * from t_balance
+        where user_id = #{uid}
+    </select>
+    <select id="selectTBalanceList" parameterType="TBalance" resultMap="TBalanceResult">
+        <include refid="selectTBalanceVo"/>
+        <where>  
+<!--            <if test="userId != null  and userId != ''"> and user_id = #{userId}</if>-->
+            <if test="phone != null  and phone != ''"> and b.phone = #{phone}</if>
+            <if test="mail != null  and mail != ''"> and b.mail = #{mail}</if>
+            <if test="currency != null  and currency != ''"> and a.currency = #{currency}</if>
+            <if test="sysIds != null and sysIds.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="sysIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+<!--            <if test="blockedBalance != null "> and blocked_balance = #{blockedBalance}</if>-->
+<!--            <if test="balance != null "> and balance = #{balance}</if>-->
+<!--            <if test="assetsBlockedBalance != null "> and assets_blocked_balance = #{assetsBlockedBalance}</if>-->
+<!--            <if test="assetsBalance != null "> and assets_balance = #{assetsBalance}</if>-->
+<!--            <if test="tokenBalance != null "> and token_balance = #{tokenBalance}</if>-->
+<!--            <if test="tokenBlockedBalance != null "> and token_blocked_balance = #{tokenBlockedBalance}</if>-->
+<!--            <if test="fbBalance != null "> and fb_balance = #{fbBalance}</if>-->
+<!--            <if test="fbBlockedBalance != null "> and fb_blocked_balance = #{fbBlockedBalance}</if>-->
+<!--            <if test="raiseBalance != null "> and raise_balance = #{raiseBalance}</if>-->
+<!--            <if test="chainBalance != null "> and chain_balance = #{chainBalance}</if>-->
+<!--            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>-->
+        </where>
+        order by a.update_time desc
+    </select>
+    
+    <select id="selectTBalanceById" parameterType="String" resultMap="TBalanceResult">
+        <include refid="selectTBalanceVo"/>
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertTBalance" parameterType="TBalance">
+        insert into t_balance
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="currency != null">currency,</if>
+            <if test="blockedBalance != null">blocked_balance,</if>
+            <if test="balance != null">balance,</if>
+            <if test="assetsBlockedBalance != null">assets_blocked_balance,</if>
+            <if test="assetsBalance != null">assets_balance,</if>
+            <if test="tokenBalance != null">token_balance,</if>
+            <if test="tokenBlockedBalance != null">token_blocked_balance,</if>
+            <if test="fbBalance != null">fb_balance,</if>
+            <if test="fbBlockedBalance != null">fb_blocked_balance,</if>
+            <if test="raiseBalance != null">raise_balance,</if>
+            <if test="chainBalance != null">chain_balance,</if>
+            <if test="remarks != null">remarks,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="currency != null">#{currency},</if>
+            <if test="blockedBalance != null">#{blockedBalance},</if>
+            <if test="balance != null">#{balance},</if>
+            <if test="assetsBlockedBalance != null">#{assetsBlockedBalance},</if>
+            <if test="assetsBalance != null">#{assetsBalance},</if>
+            <if test="tokenBalance != null">#{tokenBalance},</if>
+            <if test="tokenBlockedBalance != null">#{tokenBlockedBalance},</if>
+            <if test="fbBalance != null">#{fbBalance},</if>
+            <if test="fbBlockedBalance != null">#{fbBlockedBalance},</if>
+            <if test="raiseBalance != null">#{raiseBalance},</if>
+            <if test="chainBalance != null">#{chainBalance},</if>
+            <if test="remarks != null">#{remarks},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTBalance" parameterType="TBalance">
+        update t_balance
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="currency != null">currency = #{currency},</if>
+            <if test="blockedBalance != null">blocked_balance = #{blockedBalance},</if>
+            <if test="balance != null">balance = #{balance},</if>
+            <if test="assetsBlockedBalance != null">assets_blocked_balance = #{assetsBlockedBalance},</if>
+            <if test="assetsBalance != null">assets_balance = #{assetsBalance},</if>
+            <if test="tokenBalance != null">token_balance = #{tokenBalance},</if>
+            <if test="tokenBlockedBalance != null">token_blocked_balance = #{tokenBlockedBalance},</if>
+            <if test="fbBalance != null">fb_balance = #{fbBalance},</if>
+            <if test="fbBlockedBalance != null">fb_blocked_balance = #{fbBlockedBalance},</if>
+            <if test="raiseBalance != null">raise_balance = #{raiseBalance},</if>
+            <if test="chainBalance != null">chain_balance = #{chainBalance},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTBalanceById" parameterType="String">
+        delete from t_balance where id = #{id}
+    </delete>
+
+    <delete id="deleteTBalanceByIds" parameterType="String">
+        delete from t_balance where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

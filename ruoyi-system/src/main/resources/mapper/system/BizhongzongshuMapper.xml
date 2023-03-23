@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BizhongzongshuMapper">
+
+<!--    <select id="selectBalance" resultType="java.util.Map">-->
+<!--        SELECT-->
+<!--            currency,-->
+<!--            sum(balance) balance,-->
+<!--            sum(blocked_balance) blocked_balance,-->
+<!--            sum(assets_blocked_balance) assets_blocked_balance,-->
+<!--            sum(assets_balance) assets_balance,-->
+<!--            sum(token_balance) token_balance,-->
+<!--            sum(token_blocked_balance) token_blocked_balance,-->
+<!--            sum(fb_balance) fb_balance,-->
+<!--            sum(fb_blocked_balance) fb_blocked_balance,-->
+<!--            sum(chain_balance) chain_balance-->
+<!--        FROM-->
+<!--            t_balance-->
+<!--        where currency is not null-->
+<!--        GROUP BY currency-->
+<!--    </select>-->
+    <select id="selectBalance" resultType="java.util.Map">
+        SELECT
+            a.currency,
+            sum(a.balance) balance,
+            sum(a.blocked_balance) blocked_balance,
+            sum(a.assets_blocked_balance) assets_blocked_balance,
+            sum(a.assets_balance) assets_balance,
+            sum(a.token_balance) token_balance,
+            sum(a.token_blocked_balance) token_blocked_balance,
+            sum(a.fb_balance) fb_balance,
+            sum(a.fb_blocked_balance) fb_blocked_balance,
+            sum(a.chain_balance) chain_balance
+        FROM
+            t_balance a left join t_member b on a.user_id = b.id
+        <where>
+            <if test="sysIds != null and sysIds.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="sysIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.currency is not null
+        </where>
+        GROUP BY a.currency
+    </select>
+</mapper>

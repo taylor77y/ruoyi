@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.MoneyAccountMapper">
+    
+    <resultMap type="MoneyAccount" id="MoneyAccountResult">
+        <result property="id"    column="id"    />
+        <result property="account"    column="account"    />
+        <result property="username"    column="username"    />
+        <result property="qrcode"    column="qrcode"    />
+        <result property="email"    column="email"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="bankname"    column="bankname"    />
+        <result property="type"    column="type"    />
+    </resultMap>
+
+    <sql id="selectMoneyAccountVo">
+        select id, account, username, qrcode, email, status, create_time, bankname, type from money_account
+    </sql>
+
+    <select id="selectMoneyAccountList" parameterType="MoneyAccount" resultMap="MoneyAccountResult">
+        <include refid="selectMoneyAccountVo"/>
+        <where>  
+            <if test="account != null  and account != ''"> and account = #{account}</if>
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="qrcode != null  and qrcode != ''"> and qrcode = #{qrcode}</if>
+            <if test="email != null  and email != ''"> and email = #{email}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="bankname != null  and bankname != ''"> and bankname like concat('%', #{bankname}, '%')</if>
+            <if test="type != null "> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectMoneyAccountById" parameterType="Long" resultMap="MoneyAccountResult">
+        <include refid="selectMoneyAccountVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertMoneyAccount" parameterType="MoneyAccount" useGeneratedKeys="true" keyProperty="id">
+        insert into money_account
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="account != null and account != ''">account,</if>
+            <if test="username != null and username != ''">username,</if>
+            <if test="qrcode != null">qrcode,</if>
+            <if test="email != null">email,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="bankname != null">bankname,</if>
+            <if test="type != null">type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="account != null and account != ''">#{account},</if>
+            <if test="username != null and username != ''">#{username},</if>
+            <if test="qrcode != null">#{qrcode},</if>
+            <if test="email != null">#{email},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="bankname != null">#{bankname},</if>
+            <if test="type != null">#{type},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMoneyAccount" parameterType="MoneyAccount">
+        update money_account
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="account != null and account != ''">account = #{account},</if>
+            <if test="username != null and username != ''">username = #{username},</if>
+            <if test="qrcode != null">qrcode = #{qrcode},</if>
+            <if test="email != null">email = #{email},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="bankname != null">bankname = #{bankname},</if>
+            <if test="type != null">type = #{type},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteMoneyAccountById" parameterType="Long">
+        delete from money_account where id = #{id}
+    </delete>
+
+    <delete id="deleteMoneyAccountByIds" parameterType="String">
+        delete from money_account where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="findByUsername" parameterType="MoneyAccount" resultMap="MoneyAccountResult">
+        <include refid="selectMoneyAccountVo"/>
+        where username = #{username}
+    </select>
+</mapper>

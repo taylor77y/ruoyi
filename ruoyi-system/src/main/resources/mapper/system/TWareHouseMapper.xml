@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TWareHouseMapper">
+    
+    <resultMap type="TWareHouse" id="TWareHouseResult">
+        <result property="id"    column="id"    />
+        <result property="pairsName"    column="pairs_name"    />
+        <result property="coinName"    column="coin_name"    />
+        <result property="mainCur"    column="main_cur"    />
+        <result property="margin"    column="margin"    />
+        <result property="unProfitLoss"    column="un_profit_loss"    />
+        <result property="profit"    column="profit"    />
+        <result property="profitUp"    column="profit_up"    />
+        <result property="tokenNum"    column="token_num"    />
+        <result property="isTokenNum"    column="is_token_num"    />
+        <result property="avePrice"    column="ave_price"    />
+        <result property="closePrice"    column="close_price"    />
+        <result property="priceType"    column="price_type"    />
+        <result property="triggerPrice"    column="trigger_price"    />
+        <result property="ordPrice"    column="ord_price"    />
+        <result property="member"    column="member"    />
+        <result property="tradeType"    column="trade_type"    />
+        <result property="avgLevel"    column="avg_level"    />
+        <result property="hands"    column="hands"    />
+        <result property="orders"    column="orders"    />
+        <result property="forcePrice"    column="force_price"    />
+        <result property="state"    column="state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="controlPrice"    column="control_price"    />
+        <result property="win"    column="win"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="mail"    column="mail"    />
+        <result property="phone"    column="phone"    />
+    </resultMap>
+
+    <select id="selectPage" parameterType="TWareHouseParam" resultMap="TWareHouseResult">
+        select
+            t.*,m.uuid,m.phone,m.mail
+        from t_warehouse t left join t_member m on t.member = m.id
+        <where>
+            <if test="uuid != null  and uuid != ''"> and m.uuid = #{uuid}</if>
+            <if test="phone != null  and phone != ''"> and m.phone = #{phone}</if>
+            <if test="mail != null  and mail != ''"> and m.mail = #{mail}</if>
+        </where>
+        order by t.create_time desc
+    </select>
+
+    <update id="setWin">
+        update t_warehouse
+        set win = #{win}
+        where id = #{id}
+    </update>
+</mapper>

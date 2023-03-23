@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TShareImgMapper">
+    
+    <resultMap type="TShareImg" id="TShareImgResult">
+        <result property="id"    column="id"    />
+        <result property="image"    column="image"    />
+        <result property="type"    column="type"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTShareImgVo">
+        select id, image, type, create_time, update_time from t_share_img
+    </sql>
+
+    <select id="selectTShareImgList" parameterType="TShareImg" resultMap="TShareImgResult">
+        <include refid="selectTShareImgVo"/>
+        <where>  
+            <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+        </where>
+    </select>
+    
+    <select id="selectTShareImgById" parameterType="String" resultMap="TShareImgResult">
+        <include refid="selectTShareImgVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTShareImg" parameterType="TShareImg">
+        insert into t_share_img
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="image != null">image,</if>
+            <if test="type != null">type,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="image != null">#{image},</if>
+            <if test="type != null">#{type},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTShareImg" parameterType="TShareImg">
+        update t_share_img
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="image != null">image = #{image},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTShareImgById" parameterType="String">
+        delete from t_share_img where id = #{id}
+    </delete>
+
+    <delete id="deleteTShareImgByIds" parameterType="String">
+        delete from t_share_img where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

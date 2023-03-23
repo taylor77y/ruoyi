@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TMemberMapper">
+    
+    <resultMap type="TMember" id="TMemberResult">
+        <result property="id"    column="id"    />
+        <result property="phone"    column="phone"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="mail"    column="mail"    />
+        <result property="password"    column="password"    />
+        <result property="welMember"    column="wel_member"    />
+        <result property="brokerage"    column="brokerage"    />
+        <result property="welCode"    column="wel_code"    />
+        <result property="payPassword"    column="pay_password"    />
+        <result property="type"    column="type"    />
+        <result property="uname"    column="uname"    />
+        <result property="sex"    column="sex"    />
+        <result property="birth"    column="birth"    />
+        <result property="cardNo"    column="card_no"    />
+        <result property="address"    column="address"    />
+        <result property="quickMark"    column="quick_mark"    />
+        <result property="broker"    column="broker"    />
+        <result property="brokerGradeOne"    column="broker_grade_one"    />
+        <result property="brokerGradeTwo"    column="broker_grade_two"    />
+        <result property="brokerGradeThree"    column="broker_grade_three"    />
+        <result property="nodePath"    column="node_path"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="payWechat"    column="pay_wechat"    />
+        <result property="payAliay"    column="pay_aliay"    />
+        <result property="wechatName"    column="wechat_name"    />
+        <result property="aliayName"    column="aliay_name"    />
+        <result property="sideLink"    column="side_link"    />
+        <result property="positiveLink"    column="positive_link"    />
+        <result property="cardState"    column="card_state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="storeName"    column="store_name"    />
+        <result property="bankUserName"    column="bank_user_name"    />
+        <result property="bankName"    column="bank_name"    />
+        <result property="bankAddress"    column="bank_address"    />
+        <result property="bankCard"    column="bank_card"    />
+        <result property="fbStatus"    column="fb_status"    />
+        <result property="storeState"    column="store_state"    />
+        <result property="salt"    column="salt"    />
+        <result property="areaCode"    column="area_code"    />
+        <result property="handLink"    column="hand_link"    />
+        <result property="userStatus"    column="user_status"    />
+        <result property="oucId"    column="ouc_id"    />
+        <result property="isControl"    column="is_control"    />
+        <result property="isBok"    column="is_bok"    />
+        <result property="remark"    column="remark"    />
+        <result property="sysId" column="sys_id"/>
+        <result property="useType" column="use_type"/>
+        <result property="welMemberUuid" column="welMemberUuid"/>
+        <result property="welMemberPhone" column="welMemberPhone"/>
+        <result property="lastLoginIp" column="last_login_ip"/>
+    </resultMap>
+
+<!--    <sql id="selectTMemberVo">-->
+<!--        select id, phone, uuid, mail, password, wel_member, brokerage, wel_code,-->
+<!--               pay_password, type, uname, sex, birth, card_no, address, quick_mark, broker,-->
+<!--               broker_grade_one, broker_grade_two, broker_grade_three, node_path, nick_name,-->
+<!--               pay_wechat, pay_aliay, wechat_name, aliay_name, side_link, positive_link, card_state,-->
+<!--               create_time, update_time, store_name, bank_user_name, bank_name, bank_address, bank_card,-->
+<!--               fb_status, store_state, salt, area_code, hand_link, user_status, ouc_id, is_control, is_bok, remark,sys_id,use_type-->
+<!--        from t_member a inner join t_member b on a.wel_member = b.id-->
+<!--    </sql>-->
+    <sql id="selectTMemberVo">
+        select a.*,b.uuid as welMemberUuid,b.phone as welMemberPhone
+        from t_member a left join t_member b on a.wel_member = b.id
+    </sql>
+    <select id="findByList" resultType="com.ruoyi.system.domain.TMember">
+        select a.*,b.uuid as welMemberUuid,b.phone as welMemberPhone
+        from t_member a left join t_member b on a.wel_member = b.id
+        <where>
+            <if test="list != null and list != '' and list.size>0">
+                and a.id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item.target}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="findByList2" resultType="com.ruoyi.system.domain.TMember">
+        select a.*,b.uuid as welMemberUuid,b.phone as welMemberPhone
+        from t_member a left join t_member b on a.wel_member = b.id
+    </select>
+    <select id="selectTMemberList" parameterType="TMember" resultMap="TMemberResult">
+        <include refid="selectTMemberVo"/>
+        <where>  
+            <if test="phone != null  and phone != ''"> and a.phone = #{phone}</if>
+            <if test="uuid != null  and uuid != ''"> and a.uuid = #{uuid}</if>
+            <if test="mail != null  and mail != ''"> and a.mail = #{mail}</if>
+            <if test="password != null  and password != ''"> and a.password = #{password}</if>
+            <if test="welMember != null  and welMember != ''"> and a.wel_member = #{welMember}</if>
+            <if test="brokerage != null "> and a.brokerage = #{brokerage}</if>
+            <if test="welCode != null  and welCode != ''"> and a.wel_code = #{welCode}</if>
+            <if test="payPassword != null  and payPassword != ''"> and a.pay_password = #{payPassword}</if>
+            <if test="type != null  and type != ''"> and a.type = #{type}</if>
+            <if test="uname != null  and uname != ''"> and a.uname like concat('%', #{uname}, '%')</if>
+            <if test="sex != null  and sex != ''"> and a.sex = #{sex}</if>
+            <if test="birth != null  and birth != ''"> and a.birth = #{birth}</if>
+            <if test="cardNo != null  and cardNo != ''"> and a.card_no = #{cardNo}</if>
+            <if test="address != null  and address != ''"> and a.address = #{address}</if>
+            <if test="quickMark != null  and quickMark != ''"> and a.quick_mark = #{quickMark}</if>
+            <if test="broker != null "> and a.broker = #{broker}</if>
+            <if test="brokerGradeOne != null  and brokerGradeOne != ''"> and a.broker_grade_one = #{brokerGradeOne}</if>
+            <if test="brokerGradeTwo != null  and brokerGradeTwo != ''"> and a.broker_grade_two = #{brokerGradeTwo}</if>
+            <if test="brokerGradeThree != null  and brokerGradeThree != ''"> and a.broker_grade_three = #{brokerGradeThree}</if>
+            <if test="nodePath != null  and nodePath != ''"> and a.node_path = #{nodePath}</if>
+            <if test="nickName != null  and nickName != ''"> and a.nick_name like concat('%', #{nickName}, '%')</if>
+            <if test="payWechat != null  and payWechat != ''"> and a.pay_wechat = #{payWechat}</if>
+            <if test="payAliay != null  and payAliay != ''"> and a.pay_aliay = #{payAliay}</if>
+            <if test="wechatName != null  and wechatName != ''"> and a.wechat_name like concat('%', #{wechatName}, '%')</if>
+            <if test="aliayName != null  and aliayName != ''"> and a.aliay_name like concat('%', #{aliayName}, '%')</if>
+            <if test="sideLink != null  and sideLink != ''"> and a.side_link = #{sideLink}</if>
+            <if test="positiveLink != null  and positiveLink != ''"> and a.positive_link = #{positiveLink}</if>
+            <if test="cardState != null  and cardState != ''"> and a.card_state = #{cardState}</if>
+            <if test="storeName != null  and storeName != ''"> and a.store_name like concat('%', #{storeName}, '%')</if>
+            <if test="bankUserName != null  and bankUserName != ''"> and a.bank_user_name like concat('%', #{bankUserName}, '%')</if>
+            <if test="bankName != null  and bankName != ''"> and a.bank_name like concat('%', #{bankName}, '%')</if>
+            <if test="bankAddress != null  and bankAddress != ''"> and a.bank_address = #{bankAddress}</if>
+            <if test="bankCard != null  and bankCard != ''"> and a.bank_card = #{bankCard}</if>
+            <if test="fbStatus != null  and fbStatus != ''"> and a.fb_status = #{fbStatus}</if>
+            <if test="storeState != null  and storeState != ''"> and a.store_state = #{storeState}</if>
+            <if test="salt != null  and salt != ''"> and a.salt = #{salt}</if>
+            <if test="areaCode != null  and areaCode != ''"> and a.area_code = #{areaCode}</if>
+            <if test="handLink != null  and handLink != ''"> and a.hand_link = #{handLink}</if>
+            <if test="userStatus != null  and userStatus != ''"> and a.user_status = #{userStatus}</if>
+            <if test="oucId != null "> and a.ouc_id = #{oucId}</if>
+            <if test="isControl != null "> and a.is_control = #{isControl}</if>
+            <if test="isBok != null "> and a.is_bok = #{isBok}</if>
+            <if test="useType != null"> and a.use_type = #{useType}</if>
+            <if test="welMemberUuid != null and welMemberUuid != ''"> and b.uuid = #{welMemberUuid}</if>
+            <if test="welMemberPhone != null and welMemberPhone != ''"> and b.phone = #{welMemberPhone}</if>
+            <if test="sysId != null">and a.sys_id = #{sysId}</if>
+            <if test="sysIds != null and sysIds != '' and sysIds.size>0">
+                and a.sys_id in
+                <foreach item="item" index="index" collection="sysIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by a.create_time desc
+    </select>
+    
+    <select id="selectTMemberById" parameterType="String" resultMap="TMemberResult">
+        <include refid="selectTMemberVo"/>
+        where a.id = #{id}
+    </select>
+    <select id="selectTMemberByUuid" parameterType="String" resultMap="TMemberResult">
+        <include refid="selectTMemberVo"/>
+        where a.uuid = #{uuid}
+    </select>
+    <select id="selectTMemberByPhone" parameterType="String" resultMap="TMemberResult">
+        select * from t_member where phone = #{phone}
+    </select>
+    <insert id="insertTMember" parameterType="TMember">
+        insert into t_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="phone != null">phone,</if>
+            <if test="uuid != null">uuid,</if>
+            <if test="mail != null">mail,</if>
+            <if test="password != null">password,</if>
+            <if test="welMember != null">wel_member,</if>
+            <if test="brokerage != null">brokerage,</if>
+            <if test="welCode != null">wel_code,</if>
+            <if test="payPassword != null">pay_password,</if>
+            <if test="type != null">type,</if>
+            <if test="uname != null">uname,</if>
+            <if test="sex != null">sex,</if>
+            <if test="birth != null">birth,</if>
+            <if test="cardNo != null">card_no,</if>
+            <if test="address != null">address,</if>
+            <if test="quickMark != null">quick_mark,</if>
+            <if test="broker != null">broker,</if>
+            <if test="brokerGradeOne != null and brokerGradeOne != ''">broker_grade_one,</if>
+            <if test="brokerGradeTwo != null and brokerGradeTwo != ''">broker_grade_two,</if>
+            <if test="brokerGradeThree != null and brokerGradeThree != ''">broker_grade_three,</if>
+            <if test="nodePath != null">node_path,</if>
+            <if test="nickName != null">nick_name,</if>
+            <if test="payWechat != null">pay_wechat,</if>
+            <if test="payAliay != null">pay_aliay,</if>
+            <if test="wechatName != null">wechat_name,</if>
+            <if test="aliayName != null">aliay_name,</if>
+            <if test="sideLink != null">side_link,</if>
+            <if test="positiveLink != null">positive_link,</if>
+            <if test="cardState != null">card_state,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="storeName != null">store_name,</if>
+            <if test="bankUserName != null">bank_user_name,</if>
+            <if test="bankName != null">bank_name,</if>
+            <if test="bankAddress != null">bank_address,</if>
+            <if test="bankCard != null">bank_card,</if>
+            <if test="fbStatus != null">fb_status,</if>
+            <if test="storeState != null">store_state,</if>
+            <if test="salt != null">salt,</if>
+            <if test="areaCode != null and areaCode != ''">area_code,</if>
+            <if test="handLink != null">hand_link,</if>
+            <if test="userStatus != null">user_status,</if>
+            <if test="oucId != null">ouc_id,</if>
+            <if test="isControl != null">is_control,</if>
+            <if test="isBok != null">is_bok,</if>
+            <if test="remark != null">remark,</if>
+            <if test="sysId != null">sys_id,</if>
+            <if test="useType != null">use_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="uuid != null">#{uuid},</if>
+            <if test="mail != null">#{mail},</if>
+            <if test="password != null">#{password},</if>
+            <if test="welMember != null">#{welMember},</if>
+            <if test="brokerage != null">#{brokerage},</if>
+            <if test="welCode != null">#{welCode},</if>
+            <if test="payPassword != null">#{payPassword},</if>
+            <if test="type != null">#{type},</if>
+            <if test="uname != null">#{uname},</if>
+            <if test="sex != null">#{sex},</if>
+            <if test="birth != null">#{birth},</if>
+            <if test="cardNo != null">#{cardNo},</if>
+            <if test="address != null">#{address},</if>
+            <if test="quickMark != null">#{quickMark},</if>
+            <if test="broker != null">#{broker},</if>
+            <if test="brokerGradeOne != null and brokerGradeOne != ''">#{brokerGradeOne},</if>
+            <if test="brokerGradeTwo != null and brokerGradeTwo != ''">#{brokerGradeTwo},</if>
+            <if test="brokerGradeThree != null and brokerGradeThree != ''">#{brokerGradeThree},</if>
+            <if test="nodePath != null">#{nodePath},</if>
+            <if test="nickName != null">#{nickName},</if>
+            <if test="payWechat != null">#{payWechat},</if>
+            <if test="payAliay != null">#{payAliay},</if>
+            <if test="wechatName != null">#{wechatName},</if>
+            <if test="aliayName != null">#{aliayName},</if>
+            <if test="sideLink != null">#{sideLink},</if>
+            <if test="positiveLink != null">#{positiveLink},</if>
+            <if test="cardState != null">#{cardState},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="storeName != null">#{storeName},</if>
+            <if test="bankUserName != null">#{bankUserName},</if>
+            <if test="bankName != null">#{bankName},</if>
+            <if test="bankAddress != null">#{bankAddress},</if>
+            <if test="bankCard != null">#{bankCard},</if>
+            <if test="fbStatus != null">#{fbStatus},</if>
+            <if test="storeState != null">#{storeState},</if>
+            <if test="salt != null">#{salt},</if>
+            <if test="areaCode != null and areaCode != ''">#{areaCode},</if>
+            <if test="handLink != null">#{handLink},</if>
+            <if test="userStatus != null">#{userStatus},</if>
+            <if test="oucId != null">#{oucId},</if>
+            <if test="isControl != null">#{isControl},</if>
+            <if test="isBok != null">#{isBok},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="sysId != null">#{sysId},</if>
+            <if test="useType != null">#{useType},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTMember" parameterType="TMember">
+        update t_member
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="uuid != null">uuid = #{uuid},</if>
+            <if test="mail != null">mail = #{mail},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="welMember != null">wel_member = #{welMember},</if>
+            <if test="brokerage != null">brokerage = #{brokerage},</if>
+            <if test="welCode != null">wel_code = #{welCode},</if>
+            <if test="payPassword != null">pay_password = #{payPassword},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="uname != null">uname = #{uname},</if>
+            <if test="sex != null">sex = #{sex},</if>
+            <if test="birth != null">birth = #{birth},</if>
+            <if test="cardNo != null">card_no = #{cardNo},</if>
+            <if test="address != null">address = #{address},</if>
+            <if test="quickMark != null">quick_mark = #{quickMark},</if>
+            <if test="broker != null">broker = #{broker},</if>
+            <if test="brokerGradeOne != null and brokerGradeOne != ''">broker_grade_one = #{brokerGradeOne},</if>
+            <if test="brokerGradeTwo != null and brokerGradeTwo != ''">broker_grade_two = #{brokerGradeTwo},</if>
+            <if test="brokerGradeThree != null and brokerGradeThree != ''">broker_grade_three = #{brokerGradeThree},</if>
+            <if test="nodePath != null">node_path = #{nodePath},</if>
+            <if test="nickName != null">nick_name = #{nickName},</if>
+            <if test="payWechat != null">pay_wechat = #{payWechat},</if>
+            <if test="payAliay != null">pay_aliay = #{payAliay},</if>
+            <if test="wechatName != null">wechat_name = #{wechatName},</if>
+            <if test="aliayName != null">aliay_name = #{aliayName},</if>
+            <if test="sideLink != null">side_link = #{sideLink},</if>
+            <if test="positiveLink != null">positive_link = #{positiveLink},</if>
+            <if test="cardState != null">card_state = #{cardState},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="storeName != null">store_name = #{storeName},</if>
+            <if test="bankUserName != null">bank_user_name = #{bankUserName},</if>
+            <if test="bankName != null">bank_name = #{bankName},</if>
+            <if test="bankAddress != null">bank_address = #{bankAddress},</if>
+            <if test="bankCard != null">bank_card = #{bankCard},</if>
+            <if test="fbStatus != null">fb_status = #{fbStatus},</if>
+            <if test="storeState != null">store_state = #{storeState},</if>
+            <if test="salt != null">salt = #{salt},</if>
+            <if test="areaCode != null and areaCode != ''">area_code = #{areaCode},</if>
+            <if test="handLink != null">hand_link = #{handLink},</if>
+            <if test="userStatus != null">user_status = #{userStatus},</if>
+            <if test="oucId != null">ouc_id = #{oucId},</if>
+            <if test="isControl != null">is_control = #{isControl},</if>
+            <if test="isBok != null">is_bok = #{isBok},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="sysId != null and sysId != ''">sys_id = #{sysId},</if>
+            <if test="useType != null">use_type = #{useType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTMemberById" parameterType="String">
+        delete from t_member where id = #{id}
+    </delete>
+
+    <delete id="deleteTMemberByIds" parameterType="String">
+        delete from t_member where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

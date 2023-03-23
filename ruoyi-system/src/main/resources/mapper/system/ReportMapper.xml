@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ReportMapper">
+
+    <select id="findCountByMemberToDay" resultType="java.lang.Long">
+        select count(0) from t_member
+        <where>
+            <if test="time != null">
+                and date_format(create_time,'%Y-%m-%d %H') = date_format(#{time},'%Y-%m-%d %H')
+            </if>
+            <if test="list != null and list.size>0">
+                and sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and use_type = 1
+        </where>
+    </select>
+    <select id="findCountByMemberToMonth" resultType="java.lang.Long">
+        select count(0) from t_member
+        <where>
+            <if test="time != null">
+                and date_format(create_time,'%Y-%m-%d') = date_format(#{time},'%Y-%m-%d')
+            </if>
+            <if test="list != null and list.size>0">
+                and sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and use_type = 1
+        </where>
+    </select>
+    <select id="findCountByMemberToYear" resultType="java.lang.Long">
+        select count(0) from t_member
+        <where>
+            <if test="time != null">
+                and date_format(create_time,'%Y-%m') = date_format(#{time},'%Y-%m')
+            </if>
+            <if test="list != null and list.size>0">
+                and sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and use_type = 1
+        </where>
+    </select>
+    
+    
+    <select id="findAmountByUserAndCurrency" resultType="java.math.BigDecimal">
+        select ifnull(sum(a.assets_balance),0)
+        from t_balance a inner join t_member b on a.user_id = b.id
+        <where>
+            <if test="list != null and list.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and currency = #{currency} and b.use_type = 1
+        </where>
+    </select>
+
+
+
+
+
+    <select id="findMemberRecharge" resultType="java.math.BigDecimal">
+        select ifnull(sum(a.amount),0) from t_member_recharge a inner join t_member b
+        on a.member_id = b.id
+        <where>
+            <if test="memberId != null and memberId != ''">
+                and a.member_id = #{memberId}
+            </if>
+            <if test="currency != null and currency != ''">
+                and a.currency = #{currency}
+            </if>
+            <choose>
+                <when test="openTime == closeTime">
+                    <if test="openTime != null">
+                        and date_format(a.update_time,'%Y-%m-%d') = date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                </when>
+                <otherwise>
+                    <if test="openTime != null">
+                        and date_format(a.update_time,'%Y-%m-%d') >= date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                    <if test="closeTime != null">
+                        and date_format(a.update_time,'%Y-%m-%d') &lt;= date_format(#{closeTime},'%Y-%m-%d')
+                    </if>
+                </otherwise>
+            </choose>
+            <if test="memberId == null">
+                and b.use_type = 1
+            </if>
+            and a.status = 2
+        </where>
+    </select>
+    <select id="findMemberIdByWithDraw" resultType="java.math.BigDecimal">
+        select ifnull(sum(a.balance),0) from t_extract_coin a inner join t_member b on a.member = b.id
+        <where>
+            <if test="memberId != null and memberId != ''">
+                and a.member = #{memberId}
+            </if>
+            <choose>
+                <when test="openTime == closeTime">
+                    <if test="openTime != null">
+                        and date_format(a.update_time,'%Y-%m-%d') = date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                </when>
+                <otherwise>
+                    <if test="openTime != null">
+                        and date_format(a.update_time,'%Y-%m-%d') >= date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                    <if test="closeTime != null">
+                        and date_format(a.update_time,'%Y-%m-%d') &lt;= date_format(#{closeTime},'%Y-%m-%d')
+                    </if>
+                </otherwise>
+            </choose>
+            <if test="memberId == null">
+                and b.use_type = 1
+            </if>
+            and a.state = 'PASS'
+        </where>
+    </select>
+    <select id="findMemberByOTC" resultType="java.math.BigDecimal">
+        select ifnull(sum(a.num),0) from t_otc_order_price a inner join t_member b on a.user_id = b.id
+        <where>
+            <if test="memberId != null and memberId != ''">
+                and a.user_id = #{memberId}
+            </if>
+            <if test="userDirection != null and userDirection != ''">
+                and a.user_direction = #{userDirection}
+            </if>
+            <choose>
+                <when test="openTime == closeTime">
+                    <if test="openTime != null">
+                        and date_format(a.update_time,'%Y-%m-%d') >= date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                </when>
+                <otherwise>
+                    <if test="openTime != null">
+                        and date_format(a.update_time,'%Y-%m-%d') >= date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                    <if test="closeTime != null ">
+                        and date_format(a.update_time,'%Y-%m-%d') &lt;= date_format(#{closeTime},'%Y-%m-%d')
+                    </if>
+                </otherwise>
+            </choose>
+            <if test="memberId == null">
+                and b.use_type = 1
+            </if>
+            and a.status = 'FINISH'
+        </where>
+    </select>
+
+    <select id="findMemberMhyByWin" resultType="java.math.BigDecimal">
+        select ifnull(sum(a.profit),0) from t_seconds_bet_log a inner join t_member b on a.member_id = b.id
+        <where>
+            <if test="memberId != null and memberId != ''">
+                and a.member_id = #{memberId}
+            </if>
+            <choose>
+                <when test="openTime == closeTime">
+                    <if test="openTime != null">
+                        and date_format(a.settle_time,'%Y-%m-%d') >= date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                </when>
+                <otherwise>
+                    <if test="openTime != null">
+                        and date_format(a.settle_time,'%Y-%m-%d') >= date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                    <if test="closeTime != null">
+                        and date_format(a.settle_time,'%Y-%m-%d') &lt;= date_format(#{closeTime},'%Y-%m-%d')
+                    </if>
+                </otherwise>
+            </choose>
+            <if test="memberId == null">
+                and b.use_type = 1
+            </if>
+            and a.settle_status = 1 and a.is_win = 1
+        </where>
+    </select>
+    <select id="findMemberMhyByDonate" resultType="java.math.BigDecimal">
+        select ifnull(sum(a.amount),0) from t_seconds_bet_log a inner join t_member b on a.member_id = b.id
+        <where>
+            <if test="memberId != null and memberId != ''">
+                and a.member_id = #{memberId}
+            </if>
+            <choose>
+                <when test="openTime == closeTime">
+                    <if test="openTime != null">
+                        and date_format(a.settle_time,'%Y-%m-%d') >= date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                </when>
+                <otherwise>
+                    <if test="openTime != null">
+                        and date_format(a.settle_time,'%Y-%m-%d') >= date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                    <if test="closeTime != null">
+                        and date_format(a.settle_time,'%Y-%m-%d') &lt;= date_format(#{closeTime},'%Y-%m-%d')
+                    </if>
+                </otherwise>
+            </choose>
+            <if test="memberId == null">
+                and b.use_type = 1
+            </if>
+            and a.settle_status = 1 and a.is_win = 2
+        </where>
+    </select>
+
+    <select id="findMemberByXnAmount" resultType="java.math.BigDecimal">
+        select ifnull(sum(a.balance_difference),0) from t_balance_record a inner join t_member b on a.member_id = b.id
+        <where>
+            <if test="memberId != null and memberId != ''">
+                and a.member_id = #{memberId}
+            </if>
+            <if test="balanceType != null and balanceType != ''">
+                and a.balance_type = #{balanceType}
+            </if>
+            <if test="currency != null and currency != ''">
+                and a.currency = #{currency}
+            </if>
+            <choose>
+                <when test="openTime == closeTime">
+                    <if test="openTime != null">
+                        and date_format(a.create_time,'%Y-%m-%d') = date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                </when>
+                <otherwise>
+                    <if test="openTime != null">
+                        and date_format(a.create_time,'%Y-%m-%d') >= date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                    <if test="closeTime != null">
+                        and date_format(a.create_time,'%Y-%m-%d') &lt;= date_format(#{closeTime},'%Y-%m-%d')
+                    </if>
+                </otherwise>
+            </choose>
+            <if test="memberId == null">
+                and b.use_type = 1
+            </if>
+        </where>
+    </select>
+
+
+    <resultMap type="TMember" id="TMemberResult">
+        <result property="id"    column="id"    />
+        <result property="phone"    column="phone"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="mail"    column="mail"    />
+        <result property="password"    column="password"    />
+        <result property="welMember"    column="wel_member"    />
+        <result property="brokerage"    column="brokerage"    />
+        <result property="welCode"    column="wel_code"    />
+        <result property="payPassword"    column="pay_password"    />
+        <result property="type"    column="type"    />
+        <result property="uname"    column="uname"    />
+        <result property="sex"    column="sex"    />
+        <result property="birth"    column="birth"    />
+        <result property="cardNo"    column="card_no"    />
+        <result property="address"    column="address"    />
+        <result property="quickMark"    column="quick_mark"    />
+        <result property="broker"    column="broker"    />
+        <result property="brokerGradeOne"    column="broker_grade_one"    />
+        <result property="brokerGradeTwo"    column="broker_grade_two"    />
+        <result property="brokerGradeThree"    column="broker_grade_three"    />
+        <result property="nodePath"    column="node_path"    />
+        <result property="nickName"    column="nick_name"    />
+        <result property="payWechat"    column="pay_wechat"    />
+        <result property="payAliay"    column="pay_aliay"    />
+        <result property="wechatName"    column="wechat_name"    />
+        <result property="aliayName"    column="aliay_name"    />
+        <result property="sideLink"    column="side_link"    />
+        <result property="positiveLink"    column="positive_link"    />
+        <result property="cardState"    column="card_state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="storeName"    column="store_name"    />
+        <result property="bankUserName"    column="bank_user_name"    />
+        <result property="bankName"    column="bank_name"    />
+        <result property="bankAddress"    column="bank_address"    />
+        <result property="bankCard"    column="bank_card"    />
+        <result property="fbStatus"    column="fb_status"    />
+        <result property="storeState"    column="store_state"    />
+        <result property="salt"    column="salt"    />
+        <result property="areaCode"    column="area_code"    />
+        <result property="handLink"    column="hand_link"    />
+        <result property="userStatus"    column="user_status"    />
+        <result property="oucId"    column="ouc_id"    />
+        <result property="isControl"    column="is_control"    />
+        <result property="isBok"    column="is_bok"    />
+        <result property="remark"    column="remark"    />
+        <result property="sysId" column="sys_id"/>
+        <result property="useType" column="use_type"/>
+        <result property="welMemberUuid" column="welMemberUuid"/>
+        <result property="welMemberPhone" column="welMemberPhone"/>
+        <result property="lastLoginIp" column="last_login_ip"/>
+    </resultMap>
+
+    <select id="findInfoByUser" resultMap="TMemberResult">
+        select a.*,f.uuid as welMemberUuid,f.phone as welMemberPhone
+        from t_member a left join t_member f on a.wel_member = f.id
+        <foreach item="item" index="index" collection="list"  separator=" " >
+            <if test="item == '会员充值'">
+                inner join t_member_recharge b on a.id = b.member_id
+            </if>
+            <if test="item == '虚拟上分'">
+                inner join t_balance_record c on a.id = c.member_id
+            </if>
+            <if test="item == '法币购买'">
+                inner join t_otc_order_price d on a.id = d.user_id
+            </if>
+        </foreach>
+        <where>
+            <foreach item="item" index="index" collection="list" >
+                <if test="item == '会员认证'">
+                    and a.card_state = 'PASS'
+                    <if test="openTime != null">
+                        and date_format(a.update_time,'%Y-%m-%d') >= date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                    <if test="closeTime != null">
+                        and date_format(a.update_time,'%Y-%m-%d') &lt;= date_format(#{closeTime},'%Y-%m-%d')
+                    </if>
+                </if>
+                <if test="item == '会员充值'">
+                    and b.status = 2
+                    <if test="openTime != null">
+                        and date_format(b.update_time,'%Y-%m-%d') >= date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                    <if test="closeTime != null">
+                        and date_format(b.update_time,'%Y-%m-%d') &lt;= date_format(#{closeTime},'%Y-%m-%d')
+                    </if>
+                </if>
+                <if test="item == '虚拟上分'">
+                    and c.balance_type = 52
+                    <if test="openTime != null">
+                        and date_format(c.create_time,'%Y-%m-%d') >= date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                    <if test="closeTime != null">
+                        and date_format(c.create_time,'%Y-%m-%d') &lt;= date_format(#{closeTime},'%Y-%m-%d')
+                    </if>
+                </if>
+                <if test="item == '法币购买'">
+                    and d.status = 'FINISH'
+                    <if test="openTime != null">
+                        and date_format(d.create_time,'%Y-%m-%d') >= date_format(#{openTime},'%Y-%m-%d')
+                    </if>
+                    <if test="closeTime != null">
+                        and date_format(d.create_time,'%Y-%m-%d') &lt;= date_format(#{closeTime},'%Y-%m-%d')
+                    </if>
+                </if>
+            </foreach>
+            <if test="sysIds != null and sysIds != '' and sysIds.size>0">
+                and a.sys_id in
+                <foreach item="item" index="index" collection="sysIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            and a.use_type = 1
+        </where>
+    </select>
+</mapper>

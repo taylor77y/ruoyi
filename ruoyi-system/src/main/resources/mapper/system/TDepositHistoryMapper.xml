@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TDepositHistoryMapper">
+    
+    <resultMap type="TDepositHistory" id="TDepositHistoryResult">
+        <result property="id"    column="id"    />
+        <result property="member"    column="member"    />
+        <result property="blockNumber"    column="block_number"    />
+        <result property="txHash"    column="tx_hash"    />
+        <result property="contract"    column="contract"    />
+        <result property="fromAddress"    column="from_address"    />
+        <result property="toAddress"    column="to_address"    />
+        <result property="coin"    column="coin"    />
+        <result property="amount"    column="amount"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="phone" column="phone"/>
+    </resultMap>
+
+    <sql id="selectTDepositHistoryVo">
+        select
+            a.id, a.member, a.block_number, a.tx_hash, a.contract, a.from_address,
+            a.to_address, a.coin, a.amount, a.create_time,b.phone
+        from t_deposit_history a left join t_member b on a.member = b.id
+    </sql>
+
+    <select id="selectTDepositHistoryList" parameterType="TDepositHistory" resultMap="TDepositHistoryResult">
+        <include refid="selectTDepositHistoryVo"/>
+        <where>  
+            <if test="member != null  and member != ''"> and a.member = #{member}</if>
+            <if test="blockNumber != null  and blockNumber != ''"> and a.block_number = #{blockNumber}</if>
+            <if test="txHash != null  and txHash != ''"> and a.tx_hash = #{txHash}</if>
+            <if test="contract != null  and contract != ''"> and a.contract = #{contract}</if>
+            <if test="fromAddress != null  and fromAddress != ''"> and a.from_address = #{fromAddress}</if>
+            <if test="toAddress != null  and toAddress != ''"> and a.to_address = #{toAddress}</if>
+            <if test="coin != null  and coin != ''"> and a.coin = #{coin}</if>
+            <if test="amount != null  and amount != ''"> and a.amount = #{amount}</if>
+            <if test="phone != null  and phone != ''"> and b.phone = #{phone}</if>
+        </where>
+        order by a.create_time desc
+    </select>
+    
+    <select id="selectTDepositHistoryById" parameterType="String" resultMap="TDepositHistoryResult">
+        <include refid="selectTDepositHistoryVo"/>
+        where a.id = #{id}
+    </select>
+        
+    <insert id="insertTDepositHistory" parameterType="TDepositHistory">
+        insert into t_deposit_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="member != null">member,</if>
+            <if test="blockNumber != null">block_number,</if>
+            <if test="txHash != null">tx_hash,</if>
+            <if test="contract != null">contract,</if>
+            <if test="fromAddress != null">from_address,</if>
+            <if test="toAddress != null">to_address,</if>
+            <if test="coin != null">coin,</if>
+            <if test="amount != null">amount,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="member != null">#{member},</if>
+            <if test="blockNumber != null">#{blockNumber},</if>
+            <if test="txHash != null">#{txHash},</if>
+            <if test="contract != null">#{contract},</if>
+            <if test="fromAddress != null">#{fromAddress},</if>
+            <if test="toAddress != null">#{toAddress},</if>
+            <if test="coin != null">#{coin},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTDepositHistory" parameterType="TDepositHistory">
+        update t_deposit_history
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="member != null">member = #{member},</if>
+            <if test="blockNumber != null">block_number = #{blockNumber},</if>
+            <if test="txHash != null">tx_hash = #{txHash},</if>
+            <if test="contract != null">contract = #{contract},</if>
+            <if test="fromAddress != null">from_address = #{fromAddress},</if>
+            <if test="toAddress != null">to_address = #{toAddress},</if>
+            <if test="coin != null">coin = #{coin},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDepositHistoryById" parameterType="String">
+        delete from t_deposit_history where id = #{id}
+    </delete>
+
+    <delete id="deleteTDepositHistoryByIds" parameterType="String">
+        delete from t_deposit_history where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

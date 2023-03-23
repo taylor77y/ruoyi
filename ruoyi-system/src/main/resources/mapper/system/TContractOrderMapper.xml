@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TContractOrderMapper">
+    
+    <resultMap type="TContractOrder" id="TContractOrderResult">
+        <result property="id"    column="id"    />
+        <result property="pairsName"    column="pairs_name"    />
+        <result property="mainCur"    column="main_cur"    />
+        <result property="coinName"    column="coin_name"    />
+        <result property="leverNum"    column="lever_num"    />
+        <result property="leverDesc"    column="lever_desc"    />
+        <result property="margin"    column="margin"    />
+        <result property="contractHands"    column="contract_hands"    />
+        <result property="price"    column="price"    />
+        <result property="matchPrice"    column="match_price"    />
+        <result property="matchFee"    column="match_fee"    />
+        <result property="closeType"    column="close_type"    />
+        <result property="priceType"    column="price_type"    />
+        <result property="coinNum"    column="coin_num"    />
+        <result property="isContractHands"    column="is_contract_hands"    />
+        <result property="orderState"    column="order_state"    />
+        <result property="takeFee"    column="take_fee"    />
+        <result property="orderType"    column="order_type"    />
+        <result property="member"    column="member"    />
+        <result property="tradeType"    column="trade_type"    />
+        <result property="contractMulId"    column="contract_mul_id"    />
+        <result property="leverId"    column="lever_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="phone"    column="phone"    />
+        <result property="mail"    column="mail"    />
+    </resultMap>
+
+    <sql id="selectTContractOrderVo">
+        select
+            a.id, a.pairs_name, a.main_cur, a.coin_name, a.lever_num, a.lever_desc, a.margin,
+            a.contract_hands, a.price, a.match_price, a.match_fee, a.close_type, a.price_type, a.coin_num,
+            a.is_contract_hands, a.order_state, a.take_fee, a.order_type, a.member, a.trade_type, a.contract_mul_id,
+            a.lever_id, a.create_time, a.update_time,m.phone,m.mail
+        from t_contract_order a left join t_member m on a.member = m.id
+    </sql>
+
+    <select id="selectTContractOrderList" parameterType="TContractOrder" resultMap="TContractOrderResult">
+        <include refid="selectTContractOrderVo"/>
+        <where>  
+            <if test="pairsName != null  and pairsName != ''"> and a.pairs_name like concat('%', #{pairsName}, '%')</if>
+<!--            <if test="mainCur != null  and mainCur != ''"> and main_cur = #{mainCur}</if>-->
+<!--            <if test="coinName != null  and coinName != ''"> and coin_name like concat('%', #{coinName}, '%')</if>-->
+<!--            <if test="leverNum != null "> and lever_num = #{leverNum}</if>-->
+<!--            <if test="leverDesc != null  and leverDesc != ''"> and lever_desc = #{leverDesc}</if>-->
+<!--            <if test="margin != null "> and margin = #{margin}</if>-->
+<!--            <if test="contractHands != null "> and contract_hands = #{contractHands}</if>-->
+<!--            <if test="price != null "> and price = #{price}</if>-->
+<!--            <if test="matchPrice != null "> and match_price = #{matchPrice}</if>-->
+<!--            <if test="matchFee != null "> and match_fee = #{matchFee}</if>-->
+<!--            <if test="closeType != null  and closeType != ''"> and close_type = #{closeType}</if>-->
+<!--            <if test="priceType != null  and priceType != ''"> and price_type = #{priceType}</if>-->
+<!--            <if test="coinNum != null "> and coin_num = #{coinNum}</if>-->
+<!--            <if test="isContractHands != null "> and is_contract_hands = #{isContractHands}</if>-->
+<!--            <if test="orderState != null  and orderState != ''"> and order_state = #{orderState}</if>-->
+<!--            <if test="takeFee != null "> and take_fee = #{takeFee}</if>-->
+<!--            <if test="orderType != null  and orderType != ''"> and order_type = #{orderType}</if>-->
+<!--            <if test="member != null  and member != ''"> and member = #{member}</if>-->
+<!--            <if test="tradeType != null  and tradeType != ''"> and trade_type = #{tradeType}</if>-->
+<!--            <if test="contractMulId != null  and contractMulId != ''"> and contract_mul_id = #{contractMulId}</if>-->
+<!--            <if test="leverId != null  and leverId != ''"> and lever_id = #{leverId}</if>-->
+            <if test="phone != null  and phone != ''"> and m.phone = #{phone}</if>
+            <if test="mail != null  and mail != ''"> and m.mail = #{mail}</if>
+            <if test="sysIds != null and sysIds.size>0">
+                and m.sys_id in
+                <foreach item="item" index="index" collection="sysIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by a.create_time desc
+    </select>
+    
+    <select id="selectTContractOrderById" parameterType="String" resultMap="TContractOrderResult">
+        <include refid="selectTContractOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTContractOrder" parameterType="TContractOrder">
+        insert into t_contract_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="pairsName != null">pairs_name,</if>
+            <if test="mainCur != null">main_cur,</if>
+            <if test="coinName != null">coin_name,</if>
+            <if test="leverNum != null">lever_num,</if>
+            <if test="leverDesc != null">lever_desc,</if>
+            <if test="margin != null">margin,</if>
+            <if test="contractHands != null">contract_hands,</if>
+            <if test="price != null">price,</if>
+            <if test="matchPrice != null">match_price,</if>
+            <if test="matchFee != null">match_fee,</if>
+            <if test="closeType != null">close_type,</if>
+            <if test="priceType != null">price_type,</if>
+            <if test="coinNum != null">coin_num,</if>
+            <if test="isContractHands != null">is_contract_hands,</if>
+            <if test="orderState != null">order_state,</if>
+            <if test="takeFee != null">take_fee,</if>
+            <if test="orderType != null">order_type,</if>
+            <if test="member != null">member,</if>
+            <if test="tradeType != null">trade_type,</if>
+            <if test="contractMulId != null">contract_mul_id,</if>
+            <if test="leverId != null">lever_id,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="pairsName != null">#{pairsName},</if>
+            <if test="mainCur != null">#{mainCur},</if>
+            <if test="coinName != null">#{coinName},</if>
+            <if test="leverNum != null">#{leverNum},</if>
+            <if test="leverDesc != null">#{leverDesc},</if>
+            <if test="margin != null">#{margin},</if>
+            <if test="contractHands != null">#{contractHands},</if>
+            <if test="price != null">#{price},</if>
+            <if test="matchPrice != null">#{matchPrice},</if>
+            <if test="matchFee != null">#{matchFee},</if>
+            <if test="closeType != null">#{closeType},</if>
+            <if test="priceType != null">#{priceType},</if>
+            <if test="coinNum != null">#{coinNum},</if>
+            <if test="isContractHands != null">#{isContractHands},</if>
+            <if test="orderState != null">#{orderState},</if>
+            <if test="takeFee != null">#{takeFee},</if>
+            <if test="orderType != null">#{orderType},</if>
+            <if test="member != null">#{member},</if>
+            <if test="tradeType != null">#{tradeType},</if>
+            <if test="contractMulId != null">#{contractMulId},</if>
+            <if test="leverId != null">#{leverId},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTContractOrder" parameterType="TContractOrder">
+        update t_contract_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pairsName != null">pairs_name = #{pairsName},</if>
+            <if test="mainCur != null">main_cur = #{mainCur},</if>
+            <if test="coinName != null">coin_name = #{coinName},</if>
+            <if test="leverNum != null">lever_num = #{leverNum},</if>
+            <if test="leverDesc != null">lever_desc = #{leverDesc},</if>
+            <if test="margin != null">margin = #{margin},</if>
+            <if test="contractHands != null">contract_hands = #{contractHands},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="matchPrice != null">match_price = #{matchPrice},</if>
+            <if test="matchFee != null">match_fee = #{matchFee},</if>
+            <if test="closeType != null">close_type = #{closeType},</if>
+            <if test="priceType != null">price_type = #{priceType},</if>
+            <if test="coinNum != null">coin_num = #{coinNum},</if>
+            <if test="isContractHands != null">is_contract_hands = #{isContractHands},</if>
+            <if test="orderState != null">order_state = #{orderState},</if>
+            <if test="takeFee != null">take_fee = #{takeFee},</if>
+            <if test="orderType != null">order_type = #{orderType},</if>
+            <if test="member != null">member = #{member},</if>
+            <if test="tradeType != null">trade_type = #{tradeType},</if>
+            <if test="contractMulId != null">contract_mul_id = #{contractMulId},</if>
+            <if test="leverId != null">lever_id = #{leverId},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTContractOrderById" parameterType="String">
+        delete from t_contract_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTContractOrderByIds" parameterType="String">
+        delete from t_contract_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

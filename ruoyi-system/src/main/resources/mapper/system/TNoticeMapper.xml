@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TNoticeMapper">
+    
+    <resultMap type="TNotice" id="TNoticeResult">
+        <result property="id"    column="id"    />
+        <result property="title"    column="title"    />
+        <result property="content"    column="content"    />
+        <result property="imgUrl"    column="img_url"    />
+        <result property="linkUrl"    column="link_url"    />
+        <result property="noticeType"    column="notice_type"    />
+        <result property="isFavorite"    column="is_favorite"    />
+        <result property="readCount"    column="read_count"    />
+        <result property="global"    column="global"    />
+        <result property="bakText"    column="bak_text"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createUser"    column="create_user"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateUser"    column="update_user"    />
+    </resultMap>
+
+    <sql id="selectTNoticeVo">
+        select id, title, content, img_url, link_url, notice_type, is_favorite, read_count, global, bak_text, create_time, create_user, update_time, update_user from t_notice
+    </sql>
+
+    <select id="selectTNoticeList" parameterType="TNotice" resultMap="TNoticeResult">
+        <include refid="selectTNoticeVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="content != null  and content != ''"> and content = #{content}</if>
+            <if test="imgUrl != null  and imgUrl != ''"> and img_url = #{imgUrl}</if>
+            <if test="linkUrl != null  and linkUrl != ''"> and link_url = #{linkUrl}</if>
+            <if test="noticeType != null  and noticeType != ''"> and notice_type = #{noticeType}</if>
+            <if test="isFavorite != null  and isFavorite != ''"> and is_favorite = #{isFavorite}</if>
+            <if test="readCount != null "> and read_count = #{readCount}</if>
+            <if test="global != null  and global != ''"> and global = #{global}</if>
+            <if test="bakText != null  and bakText != ''"> and bak_text = #{bakText}</if>
+            <if test="createUser != null  and createUser != ''"> and create_user = #{createUser}</if>
+            <if test="updateUser != null  and updateUser != ''"> and update_user = #{updateUser}</if>
+        </where>
+    </select>
+    
+    <select id="selectTNoticeById" parameterType="String" resultMap="TNoticeResult">
+        <include refid="selectTNoticeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTNotice" parameterType="TNotice">
+        insert into t_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="title != null">title,</if>
+            <if test="content != null">content,</if>
+            <if test="imgUrl != null and imgUrl != ''">img_url,</if>
+            <if test="linkUrl != null">link_url,</if>
+            <if test="noticeType != null">notice_type,</if>
+            <if test="isFavorite != null">is_favorite,</if>
+            <if test="readCount != null">read_count,</if>
+            <if test="global != null">global,</if>
+            <if test="bakText != null">bak_text,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createUser != null">create_user,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateUser != null">update_user,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="title != null">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="imgUrl != null and imgUrl != ''">#{imgUrl},</if>
+            <if test="linkUrl != null">#{linkUrl},</if>
+            <if test="noticeType != null">#{noticeType},</if>
+            <if test="isFavorite != null">#{isFavorite},</if>
+            <if test="readCount != null">#{readCount},</if>
+            <if test="global != null">#{global},</if>
+            <if test="bakText != null">#{bakText},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createUser != null">#{createUser},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateUser != null">#{updateUser},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTNotice" parameterType="TNotice">
+        update t_notice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="imgUrl != null and imgUrl != ''">img_url = #{imgUrl},</if>
+            <if test="linkUrl != null">link_url = #{linkUrl},</if>
+            <if test="noticeType != null">notice_type = #{noticeType},</if>
+            <if test="isFavorite != null">is_favorite = #{isFavorite},</if>
+            <if test="readCount != null">read_count = #{readCount},</if>
+            <if test="global != null">global = #{global},</if>
+            <if test="bakText != null">bak_text = #{bakText},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createUser != null">create_user = #{createUser},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTNoticeById" parameterType="String">
+        delete from t_notice where id = #{id}
+    </delete>
+
+    <delete id="deleteTNoticeByIds" parameterType="String">
+        delete from t_notice where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

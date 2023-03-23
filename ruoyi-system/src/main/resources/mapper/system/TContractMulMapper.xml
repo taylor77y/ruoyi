@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TContractMulMapper">
+    
+    <resultMap type="TContractMul" id="TContractMulResult">
+        <result property="id"    column="id"    />
+        <result property="pairsName"    column="pairs_name"    />
+        <result property="contractMul"    column="contract_mul"    />
+        <result property="forcePrice"    column="force_price"    />
+        <result property="makerFee"    column="maker_fee"    />
+        <result property="takerFee"    column="taker_fee"    />
+        <result property="forceFee"    column="force_fee"    />
+        <result property="tradeFee"    column="trade_fee"    />
+        <result property="withdrawFee"    column="withdraw_fee"    />
+        <result property="ensure"    column="ensure"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTContractMulVo">
+        select id, pairs_name, contract_mul, force_price, maker_fee, taker_fee, force_fee, trade_fee, withdraw_fee, ensure, create_time, update_time from t_contract_mul
+    </sql>
+
+    <select id="selectTContractMulList" parameterType="TContractMul" resultMap="TContractMulResult">
+        <include refid="selectTContractMulVo"/>
+        <where>  
+            <if test="pairsName != null  and pairsName != ''"> and pairs_name like concat('%', #{pairsName}, '%')</if>
+            <if test="contractMul != null "> and contract_mul = #{contractMul}</if>
+            <if test="forcePrice != null "> and force_price = #{forcePrice}</if>
+            <if test="makerFee != null "> and maker_fee = #{makerFee}</if>
+            <if test="takerFee != null "> and taker_fee = #{takerFee}</if>
+            <if test="forceFee != null "> and force_fee = #{forceFee}</if>
+            <if test="tradeFee != null "> and trade_fee = #{tradeFee}</if>
+            <if test="withdrawFee != null "> and withdraw_fee = #{withdrawFee}</if>
+            <if test="ensure != null "> and ensure = #{ensure}</if>
+        </where>
+    </select>
+    
+    <select id="selectTContractMulById" parameterType="String" resultMap="TContractMulResult">
+        <include refid="selectTContractMulVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTContractMul" parameterType="TContractMul">
+        insert into t_contract_mul
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="pairsName != null">pairs_name,</if>
+            <if test="contractMul != null">contract_mul,</if>
+            <if test="forcePrice != null">force_price,</if>
+            <if test="makerFee != null">maker_fee,</if>
+            <if test="takerFee != null">taker_fee,</if>
+            <if test="forceFee != null">force_fee,</if>
+            <if test="tradeFee != null">trade_fee,</if>
+            <if test="withdrawFee != null">withdraw_fee,</if>
+            <if test="ensure != null">ensure,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="pairsName != null">#{pairsName},</if>
+            <if test="contractMul != null">#{contractMul},</if>
+            <if test="forcePrice != null">#{forcePrice},</if>
+            <if test="makerFee != null">#{makerFee},</if>
+            <if test="takerFee != null">#{takerFee},</if>
+            <if test="forceFee != null">#{forceFee},</if>
+            <if test="tradeFee != null">#{tradeFee},</if>
+            <if test="withdrawFee != null">#{withdrawFee},</if>
+            <if test="ensure != null">#{ensure},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTContractMul" parameterType="TContractMul">
+        update t_contract_mul
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pairsName != null">pairs_name = #{pairsName},</if>
+            <if test="contractMul != null">contract_mul = #{contractMul},</if>
+            <if test="forcePrice != null">force_price = #{forcePrice},</if>
+            <if test="makerFee != null">maker_fee = #{makerFee},</if>
+            <if test="takerFee != null">taker_fee = #{takerFee},</if>
+            <if test="forceFee != null">force_fee = #{forceFee},</if>
+            <if test="tradeFee != null">trade_fee = #{tradeFee},</if>
+            <if test="withdrawFee != null">withdraw_fee = #{withdrawFee},</if>
+            <if test="ensure != null">ensure = #{ensure},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTContractMulById" parameterType="String">
+        delete from t_contract_mul where id = #{id}
+    </delete>
+
+    <delete id="deleteTContractMulByIds" parameterType="String">
+        delete from t_contract_mul where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

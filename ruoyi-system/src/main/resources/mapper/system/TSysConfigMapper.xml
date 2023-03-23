@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TSysConfigMapper">
+    
+    <resultMap type="TSysConfig" id="TSysConfigResult">
+        <result property="id"    column="id"    />
+        <result property="paramName"    column="param_name"    />
+        <result property="paramKey"    column="param_key"    />
+        <result property="paramValue"    column="param_value"    />
+        <result property="commit"    column="commit"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTSysConfigVo">
+        select id, param_name, param_key, param_value, commit, create_time, update_time from t_sys_config
+    </sql>
+
+    <select id="selectTSysConfigList" parameterType="TSysConfig" resultMap="TSysConfigResult">
+        <include refid="selectTSysConfigVo"/>
+        <where>  
+            <if test="paramName != null  and paramName != ''"> and param_name like concat('%', #{paramName}, '%')</if>
+            <if test="paramKey != null  and paramKey != ''"> and param_key = #{paramKey}</if>
+            <if test="paramValue != null  and paramValue != ''"> and param_value = #{paramValue}</if>
+            <if test="commit != null  and commit != ''"> and commit = #{commit}</if>
+        </where>
+    </select>
+    
+    <select id="selectTSysConfigById" parameterType="String" resultMap="TSysConfigResult">
+        <include refid="selectTSysConfigVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTSysConfig" parameterType="TSysConfig">
+        insert into t_sys_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="paramName != null">param_name,</if>
+            <if test="paramKey != null">param_key,</if>
+            <if test="paramValue != null">param_value,</if>
+            <if test="commit != null">commit,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="paramName != null">#{paramName},</if>
+            <if test="paramKey != null">#{paramKey},</if>
+            <if test="paramValue != null">#{paramValue},</if>
+            <if test="commit != null">#{commit},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTSysConfig" parameterType="TSysConfig">
+        update t_sys_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="paramName != null">param_name = #{paramName},</if>
+            <if test="paramKey != null">param_key = #{paramKey},</if>
+            <if test="paramValue != null">param_value = #{paramValue},</if>
+            <if test="commit != null">commit = #{commit},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTSysConfigById" parameterType="String">
+        delete from t_sys_config where id = #{id}
+    </delete>
+
+    <delete id="deleteTSysConfigByIds" parameterType="String">
+        delete from t_sys_config where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

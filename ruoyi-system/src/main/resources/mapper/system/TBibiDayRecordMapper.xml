@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TBibiDayRecordMapper">
+    
+    <resultMap type="TBibiDayRecord" id="TBibiDayRecordResult">
+        <result property="id"    column="id"    />
+        <result property="currency"    column="currency"    />
+        <result property="sumBibiBuy"    column="sum_bibi_buy"    />
+        <result property="sumBibiSell"    column="sum_bibi_sell"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTBibiDayRecordVo">
+        select id, currency, sum_bibi_buy, sum_bibi_sell, create_time from t_bibi_day_record
+    </sql>
+
+    <select id="selectTBibiDayRecordList" parameterType="TBibiDayRecord" resultMap="TBibiDayRecordResult">
+        <include refid="selectTBibiDayRecordVo"/>
+        <where>  
+            <if test="currency != null  and currency != ''"> and currency = #{currency}</if>
+            <if test="sumBibiBuy != null "> and sum_bibi_buy = #{sumBibiBuy}</if>
+            <if test="sumBibiSell != null "> and sum_bibi_sell = #{sumBibiSell}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectTBibiDayRecordById" parameterType="Long" resultMap="TBibiDayRecordResult">
+        <include refid="selectTBibiDayRecordVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTBibiDayRecord" parameterType="TBibiDayRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into t_bibi_day_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="currency != null">currency,</if>
+            <if test="sumBibiBuy != null">sum_bibi_buy,</if>
+            <if test="sumBibiSell != null">sum_bibi_sell,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="currency != null">#{currency},</if>
+            <if test="sumBibiBuy != null">#{sumBibiBuy},</if>
+            <if test="sumBibiSell != null">#{sumBibiSell},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTBibiDayRecord" parameterType="TBibiDayRecord">
+        update t_bibi_day_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="currency != null">currency = #{currency},</if>
+            <if test="sumBibiBuy != null">sum_bibi_buy = #{sumBibiBuy},</if>
+            <if test="sumBibiSell != null">sum_bibi_sell = #{sumBibiSell},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTBibiDayRecordById" parameterType="Long">
+        delete from t_bibi_day_record where id = #{id}
+    </delete>
+
+    <delete id="deleteTBibiDayRecordByIds" parameterType="String">
+        delete from t_bibi_day_record where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

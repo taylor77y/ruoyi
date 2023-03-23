@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TGoogleCodeMapper">
+    
+    <resultMap type="TGoogleCode" id="TGoogleCodeResult">
+        <result property="id"    column="id"    />
+        <result property="account"    column="account"    />
+        <result property="sercet"    column="sercet"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTGoogleCodeVo">
+        select id, account, sercet, create_time from t_google_code
+    </sql>
+
+    <select id="selectTGoogleCodeList" parameterType="TGoogleCode" resultMap="TGoogleCodeResult">
+        <include refid="selectTGoogleCodeVo"/>
+        <where>  
+            <if test="account != null  and account != ''"> and account = #{account}</if>
+            <if test="sercet != null  and sercet != ''"> and sercet = #{sercet}</if>
+        </where>
+    </select>
+    
+    <select id="selectTGoogleCodeById" parameterType="Long" resultMap="TGoogleCodeResult">
+        <include refid="selectTGoogleCodeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTGoogleCode" parameterType="TGoogleCode" useGeneratedKeys="true" keyProperty="id">
+        insert into t_google_code
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="account != null">account,</if>
+            <if test="sercet != null">sercet,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="account != null">#{account},</if>
+            <if test="sercet != null">#{sercet},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTGoogleCode" parameterType="TGoogleCode">
+        update t_google_code
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="account != null">account = #{account},</if>
+            <if test="sercet != null">sercet = #{sercet},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTGoogleCodeById" parameterType="Long">
+        delete from t_google_code where id = #{id}
+    </delete>
+
+    <delete id="deleteTGoogleCodeByIds" parameterType="String">
+        delete from t_google_code where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

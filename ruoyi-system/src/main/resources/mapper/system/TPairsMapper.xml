@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TPairsMapper">
+    
+    <resultMap type="TPairs" id="TPairsResult">
+        <result property="id"    column="id"    />
+        <result property="pairsName"    column="pairs_name"    />
+        <result property="mainCur"    column="main_cur"    />
+        <result property="tokenCur"    column="token_cur"    />
+        <result property="state"    column="state"    />
+        <result property="type"    column="type"    />
+        <result property="contract"    column="contract"    />
+        <result property="point"    column="point"    />
+        <result property="image"    column="image"    />
+        <result property="sort"    column="sort"    />
+        <result property="openPrice"    column="open_price"    />
+        <result property="price"    column="price"    />
+        <result property="chPrice"    column="ch_price"    />
+        <result property="volume"    column="volume"    />
+        <result property="open"    column="open"    />
+        <result property="lowPrice"    column="low_price"    />
+        <result property="higPrice"    column="hig_price"    />
+        <result property="updown"    column="updown"    />
+        <result property="isTop"    column="is_top"    />
+        <result property="tradeMax"    column="trade_max"    />
+        <result property="tradeMin"    column="trade_min"    />
+        <result property="tradeType"    column="trade_type"    />
+        <result property="tradeRate"    column="trade_rate"    />
+        <result property="mainFrom"    column="main_from"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="isDw"    column="is_dw"    />
+        <result property="withdrawMin"    column="withdraw_min"    />
+        <result property="withdrawFee"    column="withdraw_fee"    />
+        <result property="pairsType" column="pairs_type"/>
+    </resultMap>
+
+    <sql id="selectTPairsVo">
+        select id, pairs_name, main_cur, token_cur, state, type, contract, point, image, sort, open_price, price, ch_price, volume, open, low_price, hig_price, updown, is_top, trade_max, trade_min, trade_type, trade_rate, main_from, update_time, create_time, is_dw, withdraw_min, withdraw_fee,pairs_type from t_pairs
+    </sql>
+
+    <select id="selectTPairsList" parameterType="TPairs" resultMap="TPairsResult">
+        <include refid="selectTPairsVo"/>
+        <where>  
+            <if test="pairsName != null  and pairsName != ''"> and pairs_name like concat('%', #{pairsName}, '%')</if>
+            <if test="mainCur != null  and mainCur != ''"> and main_cur = #{mainCur}</if>
+            <if test="tokenCur != null  and tokenCur != ''"> and token_cur = #{tokenCur}</if>
+            <if test="state != null  and state != ''"> and state = #{state}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="contract != null  and contract != ''"> and contract = #{contract}</if>
+            <if test="point != null "> and point = #{point}</if>
+            <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="sort != null "> and sort = #{sort}</if>
+            <if test="openPrice != null "> and open_price = #{openPrice}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="chPrice != null "> and ch_price = #{chPrice}</if>
+            <if test="volume != null "> and volume = #{volume}</if>
+            <if test="open != null "> and open = #{open}</if>
+            <if test="lowPrice != null "> and low_price = #{lowPrice}</if>
+            <if test="higPrice != null "> and hig_price = #{higPrice}</if>
+            <if test="updown != null "> and updown = #{updown}</if>
+            <if test="isTop != null "> and is_top = #{isTop}</if>
+            <if test="tradeMax != null "> and trade_max = #{tradeMax}</if>
+            <if test="tradeMin != null "> and trade_min = #{tradeMin}</if>
+            <if test="tradeType != null  and tradeType != ''"> and trade_type = #{tradeType}</if>
+            <if test="tradeRate != null "> and trade_rate = #{tradeRate}</if>
+            <if test="mainFrom != null  and mainFrom != ''"> and main_from = #{mainFrom}</if>
+            <if test="isDw != null  and isDw != ''"> and is_dw = #{isDw}</if>
+            <if test="withdrawMin != null "> and withdraw_min = #{withdrawMin}</if>
+            <if test="withdrawFee != null "> and withdraw_fee = #{withdrawFee}</if>
+            <if test="pairsType != null"> and pairs_type = #{pairsType}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectTPairsById" parameterType="String" resultMap="TPairsResult">
+        <include refid="selectTPairsVo"/>
+        where id = #{id}
+    </select>
+    <select id="selectTPairsByName" parameterType="String" resultMap="TPairsResult">
+        <include refid="selectTPairsVo"/>
+        where token_cur = #{name}
+    </select>
+    <insert id="insertTPairs" parameterType="TPairs">
+        insert into t_pairs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="pairsName != null">pairs_name,</if>
+            <if test="mainCur != null">main_cur,</if>
+            <if test="tokenCur != null">token_cur,</if>
+            <if test="state != null">state,</if>
+            <if test="type != null">type,</if>
+            <if test="contract != null">contract,</if>
+            <if test="point != null">point,</if>
+            <if test="image != null">image,</if>
+            <if test="sort != null">sort,</if>
+            <if test="openPrice != null">open_price,</if>
+            <if test="price != null">price,</if>
+            <if test="chPrice != null">ch_price,</if>
+            <if test="volume != null">volume,</if>
+            <if test="open != null">open,</if>
+            <if test="lowPrice != null">low_price,</if>
+            <if test="higPrice != null">hig_price,</if>
+            <if test="updown != null">updown,</if>
+            <if test="isTop != null">is_top,</if>
+            <if test="tradeMax != null">trade_max,</if>
+            <if test="tradeMin != null">trade_min,</if>
+            <if test="tradeType != null">trade_type,</if>
+            <if test="tradeRate != null">trade_rate,</if>
+            <if test="mainFrom != null">main_from,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="isDw != null">is_dw,</if>
+            <if test="withdrawMin != null">withdraw_min,</if>
+            <if test="withdrawFee != null">withdraw_fee,</if>
+            <if test="pairsType != null">pairs_type,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="pairsName != null">#{pairsName},</if>
+            <if test="mainCur != null">#{mainCur},</if>
+            <if test="tokenCur != null">#{tokenCur},</if>
+            <if test="state != null">#{state},</if>
+            <if test="type != null">#{type},</if>
+            <if test="contract != null">#{contract},</if>
+            <if test="point != null">#{point},</if>
+            <if test="image != null">#{image},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="openPrice != null">#{openPrice},</if>
+            <if test="price != null">#{price},</if>
+            <if test="chPrice != null">#{chPrice},</if>
+            <if test="volume != null">#{volume},</if>
+            <if test="open != null">#{open},</if>
+            <if test="lowPrice != null">#{lowPrice},</if>
+            <if test="higPrice != null">#{higPrice},</if>
+            <if test="updown != null">#{updown},</if>
+            <if test="isTop != null">#{isTop},</if>
+            <if test="tradeMax != null">#{tradeMax},</if>
+            <if test="tradeMin != null">#{tradeMin},</if>
+            <if test="tradeType != null">#{tradeType},</if>
+            <if test="tradeRate != null">#{tradeRate},</if>
+            <if test="mainFrom != null">#{mainFrom},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="isDw != null">#{isDw},</if>
+            <if test="withdrawMin != null">#{withdrawMin},</if>
+            <if test="withdrawFee != null">#{withdrawFee},</if>
+            <if test="pairsType != null">#{pairsType}</if>
+         </trim>
+    </insert>
+
+    <update id="updateTPairs" parameterType="TPairs">
+        update t_pairs
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pairsName != null">pairs_name = #{pairsName},</if>
+            <if test="mainCur != null">main_cur = #{mainCur},</if>
+            <if test="tokenCur != null">token_cur = #{tokenCur},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="contract != null">contract = #{contract},</if>
+            <if test="point != null">point = #{point},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="sort != null">sort = #{sort},</if>
+            <if test="openPrice != null">open_price = #{openPrice},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="chPrice != null">ch_price = #{chPrice},</if>
+            <if test="volume != null">volume = #{volume},</if>
+            <if test="open != null">open = #{open},</if>
+            <if test="lowPrice != null">low_price = #{lowPrice},</if>
+            <if test="higPrice != null">hig_price = #{higPrice},</if>
+            <if test="updown != null">updown = #{updown},</if>
+            <if test="isTop != null">is_top = #{isTop},</if>
+            <if test="tradeMax != null">trade_max = #{tradeMax},</if>
+            <if test="tradeMin != null">trade_min = #{tradeMin},</if>
+            <if test="tradeType != null">trade_type = #{tradeType},</if>
+            <if test="tradeRate != null">trade_rate = #{tradeRate},</if>
+            <if test="mainFrom != null">main_from = #{mainFrom},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="isDw != null">is_dw = #{isDw},</if>
+            <if test="withdrawMin != null">withdraw_min = #{withdrawMin},</if>
+            <if test="withdrawFee != null">withdraw_fee = #{withdrawFee},</if>
+            <if test="pairsType != null">pairs_type = #{pairsType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTPairsById" parameterType="String">
+        delete from t_pairs where id = #{id}
+    </delete>
+
+    <delete id="deleteTPairsByIds" parameterType="String">
+        delete from t_pairs where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="findByAll" resultMap="TPairsResult">
+        select * from t_pairs
+    </select>
+</mapper>

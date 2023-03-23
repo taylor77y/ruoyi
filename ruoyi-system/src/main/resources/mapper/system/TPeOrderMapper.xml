@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TPeOrderMapper">
+    
+    <resultMap type="TPeOrder" id="TPeOrderResult">
+        <result property="id"    column="id"    />
+        <result property="peId"    column="pe_id"    />
+        <result property="member"    column="member"    />
+        <result property="peName"    column="pe_name"    />
+        <result property="pePrice"    column="pe_price"    />
+        <result property="peNum"    column="pe_num"    />
+        <result property="peAmount"    column="pe_amount"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTPeOrderVo">
+        select
+               a.id, a.pe_id, a.member,a.pe_name,a.pe_price,
+               a.pe_num, a.pe_amount, a.create_time, a.update_time
+        from t_pe_order a left join t_member b on a.member = b.id
+    </sql>
+
+    <select id="selectTPeOrderList" parameterType="TPeOrder" resultMap="TPeOrderResult">
+        <include refid="selectTPeOrderVo"/>
+        <where>  
+            <if test="peId != null  and peId != ''"> and a.pe_id = #{peId}</if>
+            <if test="member != null  and member != ''"> and a.member = #{member}</if>
+            <if test="peName != null  and peName != ''"> and a.pe_name like concat('%', #{peName}, '%')</if>
+            <if test="pePrice != null "> and a.pe_price = #{pePrice}</if>
+            <if test="peNum != null "> and a.pe_num = #{peNum}</if>
+            <if test="peAmount != null "> and a.pe_amount = #{peAmount}</if>
+            <if test="sysIds != null and sysIds.size>0">
+                and b.sys_id in
+                <foreach item="item" index="index" collection="sysIds" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+        order by a.create_time desc
+    </select>
+    
+    <select id="selectTPeOrderById" parameterType="String" resultMap="TPeOrderResult">
+        <include refid="selectTPeOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTPeOrder" parameterType="TPeOrder">
+        insert into t_pe_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="peId != null">pe_id,</if>
+            <if test="member != null">member,</if>
+            <if test="peName != null">pe_name,</if>
+            <if test="pePrice != null">pe_price,</if>
+            <if test="peNum != null">pe_num,</if>
+            <if test="peAmount != null">pe_amount,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="peId != null">#{peId},</if>
+            <if test="member != null">#{member},</if>
+            <if test="peName != null">#{peName},</if>
+            <if test="pePrice != null">#{pePrice},</if>
+            <if test="peNum != null">#{peNum},</if>
+            <if test="peAmount != null">#{peAmount},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTPeOrder" parameterType="TPeOrder">
+        update t_pe_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="peId != null">pe_id = #{peId},</if>
+            <if test="member != null">member = #{member},</if>
+            <if test="peName != null">pe_name = #{peName},</if>
+            <if test="pePrice != null">pe_price = #{pePrice},</if>
+            <if test="peNum != null">pe_num = #{peNum},</if>
+            <if test="peAmount != null">pe_amount = #{peAmount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTPeOrderById" parameterType="String">
+        delete from t_pe_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTPeOrderByIds" parameterType="String">
+        delete from t_pe_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
