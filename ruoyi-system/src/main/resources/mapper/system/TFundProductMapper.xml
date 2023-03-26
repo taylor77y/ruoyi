@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TFundProductMapper">
+    
+    <resultMap type="TFundProduct" id="TFundProductResult">
+        <result property="id"    column="id"    />
+        <result property="zhName"    column="zh_name"    />
+        <result property="zhTwName"    column="zh_tw_name"    />
+        <result property="enName"    column="en_name"    />
+        <result property="koName"    column="ko_name"    />
+        <result property="jaName"    column="ja_name"    />
+        <result property="fundImage"    column="fund_image"    />
+        <result property="periodDay"    column="period_day"    />
+        <result property="dayRateFront"    column="day_rate_front"    />
+        <result property="dayRateBehind"    column="day_rate_behind"    />
+        <result property="todayRate"    column="today_rate"    />
+        <result property="defaultRatio"    column="default_ratio"    />
+        <result property="investmentAmountFront"    column="investment_amount_front"    />
+        <result property="investmentAmountBehind"    column="investment_amount_behind"    />
+        <result property="numAstrict"    column="num_astrict"    />
+        <result property="enabled"    column="enabled"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTFundProductVo">
+        select id, zh_name, zh_tw_name, en_name, ko_name, ja_name, fund_image, period_day, day_rate_front, day_rate_behind, today_rate, default_ratio, investment_amount_front, investment_amount_behind, num_astrict, enabled, create_time, update_time from t_fund_product
+    </sql>
+
+    <select id="selectTFundProductList" parameterType="TFundProduct" resultMap="TFundProductResult">
+        <include refid="selectTFundProductVo"/>
+        <where>  
+            <if test="zhName != null  and zhName != ''"> and zh_name like concat('%', #{zhName}, '%')</if>
+            <if test="zhTwName != null  and zhTwName != ''"> and zh_tw_name like concat('%', #{zhTwName}, '%')</if>
+            <if test="enName != null  and enName != ''"> and en_name like concat('%', #{enName}, '%')</if>
+            <if test="koName != null  and koName != ''"> and ko_name like concat('%', #{koName}, '%')</if>
+            <if test="jaName != null  and jaName != ''"> and ja_name like concat('%', #{jaName}, '%')</if>
+            <if test="fundImage != null  and fundImage != ''"> and fund_image = #{fundImage}</if>
+            <if test="periodDay != null "> and period_day = #{periodDay}</if>
+            <if test="dayRateFront != null "> and day_rate_front = #{dayRateFront}</if>
+            <if test="dayRateBehind != null "> and day_rate_behind = #{dayRateBehind}</if>
+            <if test="todayRate != null "> and today_rate = #{todayRate}</if>
+            <if test="defaultRatio != null "> and default_ratio = #{defaultRatio}</if>
+            <if test="investmentAmountFront != null "> and investment_amount_front = #{investmentAmountFront}</if>
+            <if test="investmentAmountBehind != null "> and investment_amount_behind = #{investmentAmountBehind}</if>
+            <if test="numAstrict != null "> and num_astrict = #{numAstrict}</if>
+            <if test="enabled != null "> and enabled = #{enabled}</if>
+        </where>
+    </select>
+    
+    <select id="selectTFundProductById" parameterType="Long" resultMap="TFundProductResult">
+        <include refid="selectTFundProductVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTFundProduct" parameterType="TFundProduct" useGeneratedKeys="true" keyProperty="id">
+        insert into t_fund_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="zhName != null">zh_name,</if>
+            <if test="zhTwName != null">zh_tw_name,</if>
+            <if test="enName != null">en_name,</if>
+            <if test="koName != null">ko_name,</if>
+            <if test="jaName != null">ja_name,</if>
+            <if test="fundImage != null">fund_image,</if>
+            <if test="periodDay != null">period_day,</if>
+            <if test="dayRateFront != null">day_rate_front,</if>
+            <if test="dayRateBehind != null">day_rate_behind,</if>
+            <if test="todayRate != null">today_rate,</if>
+            <if test="defaultRatio != null">default_ratio,</if>
+            <if test="investmentAmountFront != null">investment_amount_front,</if>
+            <if test="investmentAmountBehind != null">investment_amount_behind,</if>
+            <if test="numAstrict != null">num_astrict,</if>
+            <if test="enabled != null">enabled,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="zhName != null">#{zhName},</if>
+            <if test="zhTwName != null">#{zhTwName},</if>
+            <if test="enName != null">#{enName},</if>
+            <if test="koName != null">#{koName},</if>
+            <if test="jaName != null">#{jaName},</if>
+            <if test="fundImage != null">#{fundImage},</if>
+            <if test="periodDay != null">#{periodDay},</if>
+            <if test="dayRateFront != null">#{dayRateFront},</if>
+            <if test="dayRateBehind != null">#{dayRateBehind},</if>
+            <if test="todayRate != null">#{todayRate},</if>
+            <if test="defaultRatio != null">#{defaultRatio},</if>
+            <if test="investmentAmountFront != null">#{investmentAmountFront},</if>
+            <if test="investmentAmountBehind != null">#{investmentAmountBehind},</if>
+            <if test="numAstrict != null">#{numAstrict},</if>
+            <if test="enabled != null">#{enabled},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTFundProduct" parameterType="TFundProduct">
+        update t_fund_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhName != null">zh_name = #{zhName},</if>
+            <if test="zhTwName != null">zh_tw_name = #{zhTwName},</if>
+            <if test="enName != null">en_name = #{enName},</if>
+            <if test="koName != null">ko_name = #{koName},</if>
+            <if test="jaName != null">ja_name = #{jaName},</if>
+            <if test="fundImage != null">fund_image = #{fundImage},</if>
+            <if test="periodDay != null">period_day = #{periodDay},</if>
+            <if test="dayRateFront != null">day_rate_front = #{dayRateFront},</if>
+            <if test="dayRateBehind != null">day_rate_behind = #{dayRateBehind},</if>
+            <if test="todayRate != null">today_rate = #{todayRate},</if>
+            <if test="defaultRatio != null">default_ratio = #{defaultRatio},</if>
+            <if test="investmentAmountFront != null">investment_amount_front = #{investmentAmountFront},</if>
+            <if test="investmentAmountBehind != null">investment_amount_behind = #{investmentAmountBehind},</if>
+            <if test="numAstrict != null">num_astrict = #{numAstrict},</if>
+            <if test="enabled != null">enabled = #{enabled},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTFundProductById" parameterType="Long">
+        delete from t_fund_product where id = #{id}
+    </delete>
+
+    <delete id="deleteTFundProductByIds" parameterType="String">
+        delete from t_fund_product where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

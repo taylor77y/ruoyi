@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TFundOrderMapper">
+    
+    <resultMap type="TFundOrder" id="TFundOrderResult">
+        <result property="id"    column="id"    />
+        <result property="orderNumber"    column="order_number"    />
+        <result property="fundProductId"    column="fund_product_id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="valueDate"    column="value_date"    />
+        <result property="finishValueDate"    column="finish_value_date"    />
+        <result property="periodDay"    column="period_day"    />
+        <result property="residueDay"    column="residue_day"    />
+        <result property="price"    column="price"    />
+        <result property="accumulatedIncome"    column="accumulated_income"    />
+        <result property="penalPrice"    column="penal_price"    />
+        <result property="enabled"    column="enabled"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="productName"    column="productName"    />
+        <result property="productNameEn"    column="productNameEn"    />
+        <result property="UID"    column="UID"    />
+        <result property="UName"    column="UName"    />
+    </resultMap>
+
+    <sql id="selectTFundOrderVo">
+        select id, order_number, fund_product_id, member_id, value_date, finish_value_date, period_day, residue_day, price, accumulated_income, penal_price, enabled, create_time, update_time from t_fund_order
+    </sql>
+
+    <select id="selectTFundOrderList" parameterType="TFundOrder" resultMap="TFundOrderResult">
+        <include refid="selectTFundOrderVo"/>
+        <where>  
+            <if test="orderNumber != null  and orderNumber != ''"> and order_number = #{orderNumber}</if>
+            <if test="fundProductId != null "> and fund_product_id = #{fundProductId}</if>
+            <if test="memberId != null  and memberId != ''"> and member_id = #{memberId}</if>
+            <if test="valueDate != null "> and value_date = #{valueDate}</if>
+            <if test="finishValueDate != null "> and finish_value_date = #{finishValueDate}</if>
+            <if test="periodDay != null "> and period_day = #{periodDay}</if>
+            <if test="residueDay != null "> and residue_day = #{residueDay}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="accumulatedIncome != null "> and accumulated_income = #{accumulatedIncome}</if>
+            <if test="penalPrice != null "> and penal_price = #{penalPrice}</if>
+            <if test="enabled != null "> and enabled = #{enabled}</if>
+        </where>
+    </select>
+    
+    <select id="selectTFundOrderById" parameterType="Long" resultMap="TFundOrderResult">
+        <include refid="selectTFundOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTFundOrder" parameterType="TFundOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into t_fund_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNumber != null">order_number,</if>
+            <if test="fundProductId != null">fund_product_id,</if>
+            <if test="memberId != null">member_id,</if>
+            <if test="valueDate != null">value_date,</if>
+            <if test="finishValueDate != null">finish_value_date,</if>
+            <if test="periodDay != null">period_day,</if>
+            <if test="residueDay != null">residue_day,</if>
+            <if test="price != null">price,</if>
+            <if test="accumulatedIncome != null">accumulated_income,</if>
+            <if test="penalPrice != null">penal_price,</if>
+            <if test="enabled != null">enabled,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNumber != null">#{orderNumber},</if>
+            <if test="fundProductId != null">#{fundProductId},</if>
+            <if test="memberId != null">#{memberId},</if>
+            <if test="valueDate != null">#{valueDate},</if>
+            <if test="finishValueDate != null">#{finishValueDate},</if>
+            <if test="periodDay != null">#{periodDay},</if>
+            <if test="residueDay != null">#{residueDay},</if>
+            <if test="price != null">#{price},</if>
+            <if test="accumulatedIncome != null">#{accumulatedIncome},</if>
+            <if test="penalPrice != null">#{penalPrice},</if>
+            <if test="enabled != null">#{enabled},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTFundOrder" parameterType="TFundOrder">
+        update t_fund_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNumber != null">order_number = #{orderNumber},</if>
+            <if test="fundProductId != null">fund_product_id = #{fundProductId},</if>
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="valueDate != null">value_date = #{valueDate},</if>
+            <if test="finishValueDate != null">finish_value_date = #{finishValueDate},</if>
+            <if test="periodDay != null">period_day = #{periodDay},</if>
+            <if test="residueDay != null">residue_day = #{residueDay},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="accumulatedIncome != null">accumulated_income = #{accumulatedIncome},</if>
+            <if test="penalPrice != null">penal_price = #{penalPrice},</if>
+            <if test="enabled != null">enabled = #{enabled},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTFundOrderById" parameterType="Long">
+        delete from t_fund_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTFundOrderByIds" parameterType="String">
+        delete from t_fund_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectTFundOrderListByParam" parameterType="TFundOrderParam" resultMap="TFundOrderResult">
+        select o.*,m.uuid UID,m.uname UName,p.zh_name productName,p.en_name productNameEn
+            from t_fund_order o
+            left join t_member m on o.member_id = m.id
+            left join t_fund_product p on o.fund_product_id = p.id
+        <where>
+            <if test="orderNo != null and orderNo != ''"> and o.order_number = #{orderNo}</if>
+            <if test="name != null and name != ''"> and (p.zh_name = #{name} or p.en_name = #{name})</if>
+            <if test="user != null and user != ''"> and (m.uname like concat('%',#{user},'%') or m.uuid = #{user})</if>
+            <if test="status != null "> and o.enabled = #{status}</if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TSmartPoolProductMapper">
+    
+    <resultMap type="TSmartPoolProduct" id="TSmartPoolProductResult">
+        <result property="id"    column="id"    />
+        <result property="zhName"    column="zh_name"    />
+        <result property="zhTwName"    column="zh_tw_name"    />
+        <result property="enName"    column="en_name"    />
+        <result property="koName"    column="ko_name"    />
+        <result property="jaName"    column="ja_name"    />
+        <result property="buyPairsName"    column="buy_pairs_name"    />
+        <result property="outPairsName"    column="out_pairs_name"    />
+        <result property="periodDay"    column="period_day"    />
+        <result property="periodDayUnlock"    column="period_day_unlock"    />
+        <result property="dayRate"    column="day_rate"    />
+        <result property="todayRate"    column="today_rate"    />
+        <result property="investmentAmountFront"    column="investment_amount_front"    />
+        <result property="investmentAmountBehind"    column="investment_amount_behind"    />
+        <result property="numAstrict"    column="num_astrict"    />
+        <result property="enabled"    column="enabled"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTSmartPoolProductVo">
+        select id, zh_name, zh_tw_name, en_name, ko_name, ja_name, buy_pairs_name, out_pairs_name, period_day, period_day_unlock, day_rate, today_rate, investment_amount_front, investment_amount_behind, num_astrict, enabled, create_time, update_time from t_smart_pool_product
+    </sql>
+
+    <select id="selectTSmartPoolProductList" parameterType="TSmartPoolProduct" resultMap="TSmartPoolProductResult">
+        <include refid="selectTSmartPoolProductVo"/>
+        <where>  
+            <if test="zhName != null  and zhName != ''"> and zh_name like concat('%', #{zhName}, '%')</if>
+            <if test="zhTwName != null  and zhTwName != ''"> and zh_tw_name like concat('%', #{zhTwName}, '%')</if>
+            <if test="enName != null  and enName != ''"> and en_name like concat('%', #{enName}, '%')</if>
+            <if test="koName != null  and koName != ''"> and ko_name like concat('%', #{koName}, '%')</if>
+            <if test="jaName != null  and jaName != ''"> and ja_name like concat('%', #{jaName}, '%')</if>
+            <if test="buyPairsName != null  and buyPairsName != ''"> and buy_pairs_name like concat('%', #{buyPairsName}, '%')</if>
+            <if test="outPairsName != null  and outPairsName != ''"> and out_pairs_name like concat('%', #{outPairsName}, '%')</if>
+            <if test="periodDay != null "> and period_day = #{periodDay}</if>
+            <if test="periodDayUnlock != null "> and period_day_unlock = #{periodDayUnlock}</if>
+            <if test="dayRate != null "> and day_rate = #{dayRate}</if>
+            <if test="todayRate != null "> and today_rate = #{todayRate}</if>
+            <if test="investmentAmountFront != null "> and investment_amount_front = #{investmentAmountFront}</if>
+            <if test="investmentAmountBehind != null "> and investment_amount_behind = #{investmentAmountBehind}</if>
+            <if test="numAstrict != null "> and num_astrict = #{numAstrict}</if>
+            <if test="enabled != null "> and enabled = #{enabled}</if>
+        </where>
+    </select>
+    
+    <select id="selectTSmartPoolProductById" parameterType="Long" resultMap="TSmartPoolProductResult">
+        <include refid="selectTSmartPoolProductVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTSmartPoolProduct" parameterType="TSmartPoolProduct" useGeneratedKeys="true" keyProperty="id">
+        insert into t_smart_pool_product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="zhName != null">zh_name,</if>
+            <if test="zhTwName != null">zh_tw_name,</if>
+            <if test="enName != null">en_name,</if>
+            <if test="koName != null">ko_name,</if>
+            <if test="jaName != null">ja_name,</if>
+            <if test="buyPairsName != null">buy_pairs_name,</if>
+            <if test="outPairsName != null">out_pairs_name,</if>
+            <if test="periodDay != null">period_day,</if>
+            <if test="periodDayUnlock != null">period_day_unlock,</if>
+            <if test="dayRate != null">day_rate,</if>
+            <if test="todayRate != null">today_rate,</if>
+            <if test="investmentAmountFront != null">investment_amount_front,</if>
+            <if test="investmentAmountBehind != null">investment_amount_behind,</if>
+            <if test="numAstrict != null">num_astrict,</if>
+            <if test="enabled != null">enabled,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="zhName != null">#{zhName},</if>
+            <if test="zhTwName != null">#{zhTwName},</if>
+            <if test="enName != null">#{enName},</if>
+            <if test="koName != null">#{koName},</if>
+            <if test="jaName != null">#{jaName},</if>
+            <if test="buyPairsName != null">#{buyPairsName},</if>
+            <if test="outPairsName != null">#{outPairsName},</if>
+            <if test="periodDay != null">#{periodDay},</if>
+            <if test="periodDayUnlock != null">#{periodDayUnlock},</if>
+            <if test="dayRate != null">#{dayRate},</if>
+            <if test="todayRate != null">#{todayRate},</if>
+            <if test="investmentAmountFront != null">#{investmentAmountFront},</if>
+            <if test="investmentAmountBehind != null">#{investmentAmountBehind},</if>
+            <if test="numAstrict != null">#{numAstrict},</if>
+            <if test="enabled != null">#{enabled},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTSmartPoolProduct" parameterType="TSmartPoolProduct">
+        update t_smart_pool_product
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="zhName != null">zh_name = #{zhName},</if>
+            <if test="zhTwName != null">zh_tw_name = #{zhTwName},</if>
+            <if test="enName != null">en_name = #{enName},</if>
+            <if test="koName != null">ko_name = #{koName},</if>
+            <if test="jaName != null">ja_name = #{jaName},</if>
+            <if test="buyPairsName != null">buy_pairs_name = #{buyPairsName},</if>
+            <if test="outPairsName != null">out_pairs_name = #{outPairsName},</if>
+            <if test="periodDay != null">period_day = #{periodDay},</if>
+            <if test="periodDayUnlock != null">period_day_unlock = #{periodDayUnlock},</if>
+            <if test="dayRate != null">day_rate = #{dayRate},</if>
+            <if test="todayRate != null">today_rate = #{todayRate},</if>
+            <if test="investmentAmountFront != null">investment_amount_front = #{investmentAmountFront},</if>
+            <if test="investmentAmountBehind != null">investment_amount_behind = #{investmentAmountBehind},</if>
+            <if test="numAstrict != null">num_astrict = #{numAstrict},</if>
+            <if test="enabled != null">enabled = #{enabled},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTSmartPoolProductById" parameterType="Long">
+        delete from t_smart_pool_product where id = #{id}
+    </delete>
+
+    <delete id="deleteTSmartPoolProductByIds" parameterType="String">
+        delete from t_smart_pool_product where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
