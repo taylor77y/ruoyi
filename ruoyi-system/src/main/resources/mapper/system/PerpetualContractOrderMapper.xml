@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PerpetualContractOrderMapper">
+
+    <resultMap type="PerpetualContractOrder" id="PerpetualContractOrderResult">
+        <result property="id" column="id"/>
+        <result property="memberId" column="member_id"/>
+        <result property="pairsName" column="pairs_name"/>
+        <result property="kPrice" column="k_price"/>
+        <result property="bPrice" column="b_price"/>
+        <result property="amount" column="amount"/>
+        <result property="margin" column="margin"/>
+        <result property="matchFee" column="match_fee"/>
+        <result property="profit" column="profit"/>
+        <result property="isWin" column="is_win"/>
+        <result property="isControl" column="is_control"/>
+        <result property="controlPrice" column="control_price"/>
+        <result property="leverId" column="lever_id"/>
+        <result property="leverNum" column="lever_num"/>
+        <result property="leverDesc" column="lever_desc"/>
+        <result property="orderState" column="order_state"/>
+        <result property="tradeType" column="trade_type"/>
+        <result property="contractHands" column="contract_hands"/>
+        <result property="createTime" column="create_time"/>
+        <result property="settleTime" column="settle_time"/>
+    </resultMap>
+
+    <sql id="PerpetualContractOrderVo">
+        SELECT t.*,
+               m.uuid,
+               m.phone,
+               m.mail
+        FROM t_perpetual_contract_order t
+                 left join t_member m on t.member_id = m.id
+    </sql>
+
+    <select id="getList" parameterType="PerpetualContractOrderParam" resultMap="PerpetualContractOrderResult">
+        <include refid="PerpetualContractOrderVo"/>
+        <where>
+            <if test="pairsName != null  and pairsName != ''">and t.pairs_name LIKE CONCAT('%',#{pairsName},'%')</if>
+            <if test="uuid != null  and uuid != ''">and m.uuid = #{uuid}</if>
+            <if test="phone != null  and phone != ''">and m.phone = #{phone}</if>
+            <if test="mail != null  and mail != ''">and m.mail = #{mail}</if>
+        </where>
+        ORDER BY t.create_time desc
+    </select>
+
+    <update id="setControlAndWin">
+        update t_perpetual_contract_order
+        set is_control = #{control},
+            is_win     = #{win}
+        where id = #{id}
+    </update>
+</mapper>

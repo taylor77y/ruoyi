@@ -21,7 +21,7 @@ public class TWareHouseServiceImpl implements TWareHouseService {
     }
 
     @Override
-    public int setWin(String id, String win) {
+    public int setWin(String id, Integer win) {
         return tWareHouseMapper.setWin(id,win);
     }
 }

@@ -9,5 +9,5 @@ import java.util.List;
 public interface TWareHouseMapper {
     List<TWareHouse> selectPage(TWareHouseParam param);
 
-    int setWin(@Param("id") String id,@Param("win") String win);
+    int setWin(@Param("id") String id,@Param("win") Integer win);
 }

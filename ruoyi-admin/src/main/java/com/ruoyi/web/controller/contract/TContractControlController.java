@@ -36,7 +36,7 @@ public class TContractControlController extends BaseController {
     }
 
     @PutMapping("/setWin")
-    public AjaxResult setWin(String id,String win)
+    public AjaxResult setWin(String id,Integer win)
     {
         return AjaxResult.success(tWareHouseService.setWin(id,win));
     }

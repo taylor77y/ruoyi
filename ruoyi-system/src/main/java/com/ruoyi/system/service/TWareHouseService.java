@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface TWareHouseService {
     List<TWareHouse> selectPage(TWareHouseParam param);
-    int setWin(String id,String win);
+    int setWin(String id,Integer win);
 }
