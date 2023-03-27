@@ -142,4 +142,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="getBalanceByUserIdWithPairsName" resultMap="TBalanceResult">
+        <include refid="selectTBalanceVo"/>
+        where b.id = #{uid} and a.currency = #{pairsName}
+    </select>
 </mapper>

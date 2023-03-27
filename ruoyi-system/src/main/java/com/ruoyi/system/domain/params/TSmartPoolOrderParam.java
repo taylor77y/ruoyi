@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class TSmartPoolOrderParam {
     private String orderNo;
-    private String name;
+    private Long productId;
     private String user;
     private String status;
 }

@@ -130,10 +130,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select o.*,m.uuid UID,m.uname UName,p.zh_name productName,p.en_name productNameEn
         from t_smart_pool_order o
         left join t_member m on o.member_id = m.id
-        left join t_fund_product p on o.product_id = p.id
+        left join t_smart_pool_product p on o.product_id = p.id
         <where>
             <if test="orderNo != null and orderNo != ''"> and o.order_number = #{orderNo}</if>
-            <if test="name != null and name != ''"> and (p.zh_name = #{name} or p.en_name = #{name})</if>
+            <if test="productId != null and productId != ''"> and p.id = #{productId}</if>
             <if test="user != null and user != ''"> and (m.uname like concat('%',#{user},'%') or m.uuid = #{user})</if>
             <if test="status != null "> and o.enabled = #{status}</if>
         </where>

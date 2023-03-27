@@ -1,5 +1,6 @@
 package com.ruoyi.system.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,14 +26,13 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 【请填写功能名称】Controller
- * 
+ *
  * @author ruoyi
  * @date 2023-03-26
  */
 @RestController
 @RequestMapping("/system/smartPool/order")
-public class TSmartPoolOrderController extends BaseController
-{
+public class TSmartPoolOrderController extends BaseController {
     @Autowired
     private ITSmartPoolOrderService tSmartPoolOrderService;
 
@@ -41,10 +41,9 @@ public class TSmartPoolOrderController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:smartPoolOrder:list')")
     @GetMapping("/list")
-    public TableDataInfo list(TSmartPoolOrderParam tSmartPoolOrderParam)
-    {
+    public TableDataInfo list(TSmartPoolOrderParam tSmartPoolOrderParam) {
         startPage();
-        if("-1".equals(tSmartPoolOrderParam.getStatus())){
+        if ("-1".equals(tSmartPoolOrderParam.getStatus())) {
             tSmartPoolOrderParam.setStatus(null);
         }
         List<TSmartPoolOrder> list = tSmartPoolOrderService.selectTSmartPoolOrderListByParam(tSmartPoolOrderParam);
@@ -57,8 +56,7 @@ public class TSmartPoolOrderController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:smartPoolOrder:export')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, TSmartPoolOrder tSmartPoolOrder)
-    {
+    public void export(HttpServletResponse response, TSmartPoolOrder tSmartPoolOrder) {
         List<TSmartPoolOrder> list = tSmartPoolOrderService.selectTSmartPoolOrderList(tSmartPoolOrder);
         ExcelUtil<TSmartPoolOrder> util = new ExcelUtil<TSmartPoolOrder>(TSmartPoolOrder.class);
         util.exportExcel(response, list, "【请填写功能名称】数据");
@@ -69,8 +67,7 @@ public class TSmartPoolOrderController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:smartPoolOrder:query')")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
-    {
+    public AjaxResult getInfo(@PathVariable("id") Long id) {
         return AjaxResult.success(tSmartPoolOrderService.selectTSmartPoolOrderById(id));
     }
 
@@ -80,9 +77,8 @@ public class TSmartPoolOrderController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:smartPoolOrder:add')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody TSmartPoolOrder tSmartPoolOrder)
-    {
-        return toAjax(tSmartPoolOrderService.insertTSmartPoolOrder(tSmartPoolOrder));
+    public AjaxResult add(@RequestBody TSmartPoolOrder tSmartPoolOrder) {
+        return toAjax(tSmartPoolOrderService.addOrder(tSmartPoolOrder));
     }
 
     /**
@@ -91,8 +87,7 @@ public class TSmartPoolOrderController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:smartPoolOrder:edit')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody TSmartPoolOrder tSmartPoolOrder)
-    {
+    public AjaxResult edit(@RequestBody TSmartPoolOrder tSmartPoolOrder) {
         return toAjax(tSmartPoolOrderService.updateTSmartPoolOrder(tSmartPoolOrder));
     }
 
@@ -101,9 +96,8 @@ public class TSmartPoolOrderController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:smartPoolOrder:remove')")
     @Log(title = "【请填写功能名称】", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
-    {
+    @DeleteMapping("/{ids}")
+    public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(tSmartPoolOrderService.deleteTSmartPoolOrderByIds(ids));
     }
 }

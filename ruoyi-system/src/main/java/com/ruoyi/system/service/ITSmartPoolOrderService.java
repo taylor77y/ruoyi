@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import com.ruoyi.system.domain.TSmartPoolOrder;
 import com.ruoyi.system.domain.params.TSmartPoolOrderParam;
@@ -61,4 +62,6 @@ public interface ITSmartPoolOrderService
     public int deleteTSmartPoolOrderById(Long id);
 
     List<TSmartPoolOrder> selectTSmartPoolOrderListByParam(TSmartPoolOrderParam tSmartPoolOrderParam);
+
+    boolean addOrder(TSmartPoolOrder tSmartPoolOrder);
 }
