@@ -121,9 +121,9 @@ public class TSmartPoolOrderServiceImpl implements ITSmartPoolOrderService {
         if (tSmartPoolProduct == null) {
             throw new ServiceException("该矿机不存在！");
         }
-        if (tSmartPoolOrder.getPrice().compareTo(tSmartPoolProduct.getInvestmentAmountBehind()) < 1
+        if (tSmartPoolOrder.getPrice().compareTo(tSmartPoolProduct.getInvestmentAmountFront()) == -1
                 ||
-                tSmartPoolOrder.getPrice().compareTo(tSmartPoolProduct.getInvestmentAmountFront()) == 1
+                tSmartPoolOrder.getPrice().compareTo(tSmartPoolProduct.getInvestmentAmountBehind()) == 1
         ) {
             throw new ServiceException("金额不在投资区间！");
         }

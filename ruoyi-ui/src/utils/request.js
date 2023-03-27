@@ -12,9 +12,9 @@ let downloadLoadingInstance;
 export let isRelogin = { show: false };
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
-// axios.defaults.baseURL = "http://localhost:9999"
+axios.defaults.baseURL = "http://localhost:9999"
 // axios.defaults.baseURL = "/api"
-axios.defaults.baseURL = "http://192.168.2.15:9999"
+// axios.defaults.baseURL = "http://192.168.2.15:9999"
 //正式服MBTC
 //   axios.defaults.baseURL = "http://bbadmin.mbtcpro.com"
 //   localStorage.setItem('imgPath', 'https://oss.mbtcpro.com/')

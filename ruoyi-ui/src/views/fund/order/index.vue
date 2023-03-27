@@ -26,7 +26,7 @@
             <el-col :span="1.5" v-hasPermi="['system:fundOrder:reset']">
                 <el-date-picker v-model="resetTime" type="datetime" size="mini" placeholder="系统时间">
                 </el-date-picker>
-                <el-button style="margin-left: 20px;" type="primary" plain icon="el-icon-refresh-right" size="mini" @click="handleAdd">利息重计</el-button>
+                <el-button style="margin-left: 20px;" type="primary" plain icon="el-icon-refresh-right" size="mini" @click="handleReset" disabled>利息重计</el-button>
             </el-col>
             <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
         </el-row>

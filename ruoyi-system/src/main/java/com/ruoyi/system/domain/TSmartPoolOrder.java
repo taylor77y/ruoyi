@@ -34,13 +34,13 @@ public class TSmartPoolOrder extends BaseEntity
     private String memberId;
 
     /** 起息日 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "起息日", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "起息日", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date valueDate;
 
     /** 结束起息日 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "结束起息日", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "结束起息日", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date finishValueDate;
 
     /** 周期（天） */
@@ -64,13 +64,13 @@ public class TSmartPoolOrder extends BaseEntity
     private BigDecimal penalPrice;
 
     /** 开始时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "开始时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "开始时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
     /** 结束时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "结束时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "结束时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     /** 状态(0托管中，1已赎回，2强赎) */
