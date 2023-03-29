@@ -37,8 +37,10 @@
                     <el-tag>{{ ['停用', '启用'][scope.row.enabled] }}</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" class-name="small-padding fixed-width">
+            <el-table-column label="操作" fixed="right" class-name="small-padding fixed-width" width="200">
                 <template slot-scope="scope">
+                    <el-button size="mini" type="text" icon="el-icon-view" @click="handleDetail(scope.row)"
+                        v-hasPermi="['system:fundProduct:detail']">矿机详情</el-button>
                     <el-button size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
                         v-hasPermi="['system:fundProduct:edit']">修改</el-button>
                     <el-button size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
@@ -120,6 +122,51 @@
                 <el-button @click="cancel">取 消</el-button>
             </div>
         </el-dialog>
+
+        <el-dialog title="矿机详情" :visible.sync="openDetail" width="900px" append-to-body>
+            <el-form ref="form" :model="formDetail" label-width="180px">
+                <el-form-item label="机器算法" prop="algorithm">
+                    <el-input v-model="formDetail.algorithm" placeholder="请输入机器算法">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="生产厂家" prop="Factory">
+                    <el-input v-model="formDetail.factory" placeholder="请输入生产厂家">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="额定算力" prop="rated">
+                    <el-input v-model="formDetail.rated" placeholder="请输入额定算力">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="墙上功耗" prop="waste">
+                    <el-input v-model="formDetail.waste" placeholder="请输入墙上功耗">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="外箱尺寸" prop="size">
+                    <el-input v-model="formDetail.size" placeholder="请输入外箱尺寸">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="整机重量" prop="weight">
+                    <el-input v-model="formDetail.weight" placeholder="请输入整机重量">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="工作温度" prop="temperature">
+                    <el-input v-model="formDetail.temperature" placeholder="请输入工作温度">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="工作湿度" prop="humidity">
+                    <el-input v-model="formDetail.humidity" placeholder="请输入工作湿度">
+                    </el-input>
+                </el-form-item>
+                <el-form-item label="网路链接" prop="link">
+                    <el-input v-model="formDetail.link" placeholder="请输入网路链接">
+                    </el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="submitForm2">确 定</el-button>
+                <el-button @click="openDetail = false">取 消</el-button>
+            </div>
+        </el-dialog>
     </div>
 </template>
   
@@ -167,13 +214,27 @@ export default {
             },
             // 表单校验
             rules: {
-            }
+            },
+            formDetail: {},
+            openDetail: false
         };
     },
     created() {
         this.getList();
     },
     methods: {
+        handleDetail(row) {
+            try {
+                console.log('row.detail',row.detail)
+                let data = JSON.parse(row.detail)
+                if (data) {
+                    console.log('data',data)
+                    this.formDetail = data
+                }
+            } catch (e) { }
+            this.formDetail.id = row.id
+            this.openDetail = true
+        },
         handleUploadSuccess(res) {
             console.log('handleUploadSuccess', res)
             if (res.code == 200) {
@@ -299,6 +360,22 @@ export default {
                             this.getList();
                         });
                     }
+                }
+            });
+        },
+        submitForm2() {
+            this.$refs["form"].validate(valid => {
+                if (valid) {
+                    // this.formDetail.detail = JSON.stringify()
+                    let data = {
+                        id: this.formDetail.id,
+                        detail: JSON.stringify(this.formDetail)
+                    }
+                    updateProduct(data).then(response => {
+                        this.$modal.msgSuccess("修改成功");
+                        this.openDetail = false;
+                        this.getList();
+                    });
                 }
             });
         },

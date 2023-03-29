@@ -79,7 +79,17 @@ public class TSmartPoolProduct extends BaseEntity
     @Excel(name = "状态(0停用，1启用)")
     private Integer enabled;
 
-    public void setId(Long id) 
+    private String detail;
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }

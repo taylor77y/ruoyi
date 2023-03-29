@@ -23,10 +23,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="enabled"    column="enabled"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
+        <result property="detail"    column="detail"    />
     </resultMap>
 
     <sql id="selectTSmartPoolProductVo">
-        select id, zh_name, zh_tw_name, en_name, ko_name, ja_name, buy_pairs_name, out_pairs_name, period_day, period_day_unlock, day_rate, today_rate, investment_amount_front, investment_amount_behind, num_astrict, enabled, create_time, update_time from t_smart_pool_product
+        select id, zh_name, zh_tw_name, en_name, ko_name, ja_name, buy_pairs_name, out_pairs_name, period_day, period_day_unlock, day_rate, today_rate, investment_amount_front, investment_amount_behind, num_astrict, enabled, create_time, update_time,detail from t_smart_pool_product
     </sql>
 
     <select id="selectTSmartPoolProductList" parameterType="TSmartPoolProduct" resultMap="TSmartPoolProductResult">
@@ -117,6 +118,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="enabled != null">enabled = #{enabled},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="detail != null">detail = #{detail},</if>
         </trim>
         where id = #{id}
     </update>
