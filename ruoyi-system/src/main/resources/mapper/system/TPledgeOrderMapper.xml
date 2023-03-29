@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.TPledgeOrderMapper">
+    
+    <resultMap type="TPledgeOrder" id="TPledgeOrderResult">
+        <result property="id"    column="id"    />
+        <result property="memberId"    column="member_id"    />
+        <result property="orderNumber"    column="order_number"    />
+        <result property="borrowMoney"    column="borrow_money"    />
+        <result property="borrowName"    column="borrow_name"    />
+        <result property="pledgeMoney"    column="pledge_money"    />
+        <result property="pledgeName"    column="pledge_name"    />
+        <result property="deadline"    column="deadline"    />
+        <result property="forcePrice"    column="force_price"    />
+        <result property="pledgeRate"    column="pledge_rate"    />
+        <result property="hrRate"    column="hr_rate"    />
+        <result property="dayRate"    column="day_rate"    />
+        <result property="feeMoney"    column="fee_money"    />
+        <result property="totalMoney"    column="total_money"    />
+        <result property="totalIncurDebts"    column="total_incur_debts"    />
+        <result property="predictRefundMoney"    column="predict_refund_money"    />
+        <result property="refundPrice"    column="refund_price"    />
+        <result property="creationTime"    column="creation_time"    />
+        <result property="expireTime"    column="expire_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectTPledgeOrderVo">
+        select id, member_id, order_number, borrow_money, borrow_name, pledge_money, pledge_name, deadline, force_price, pledge_rate, hr_rate, day_rate, fee_money, total_money, total_incur_debts, predict_refund_money, refund_price, creation_time, expire_time, update_time, status from t_pledge_order
+    </sql>
+
+    <select id="selectTPledgeOrderList" parameterType="TPledgeOrder" resultMap="TPledgeOrderResult">
+        <include refid="selectTPledgeOrderVo"/>
+        <where>  
+            <if test="memberId != null  and memberId != ''"> and member_id = #{memberId}</if>
+            <if test="orderNumber != null  and orderNumber != ''"> and order_number = #{orderNumber}</if>
+            <if test="status != null "> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectTPledgeOrderById" parameterType="String" resultMap="TPledgeOrderResult">
+        <include refid="selectTPledgeOrderVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTPledgeOrder" parameterType="TPledgeOrder">
+        insert into t_pledge_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="memberId != null">member_id,</if>
+            <if test="orderNumber != null">order_number,</if>
+            <if test="borrowMoney != null">borrow_money,</if>
+            <if test="borrowName != null">borrow_name,</if>
+            <if test="pledgeMoney != null">pledge_money,</if>
+            <if test="pledgeName != null">pledge_name,</if>
+            <if test="deadline != null">deadline,</if>
+            <if test="forcePrice != null">force_price,</if>
+            <if test="pledgeRate != null">pledge_rate,</if>
+            <if test="hrRate != null">hr_rate,</if>
+            <if test="dayRate != null">day_rate,</if>
+            <if test="feeMoney != null">fee_money,</if>
+            <if test="totalMoney != null">total_money,</if>
+            <if test="totalIncurDebts != null">total_incur_debts,</if>
+            <if test="predictRefundMoney != null">predict_refund_money,</if>
+            <if test="refundPrice != null">refund_price,</if>
+            <if test="creationTime != null">creation_time,</if>
+            <if test="expireTime != null">expire_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="status != null">status,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="memberId != null">#{memberId},</if>
+            <if test="orderNumber != null">#{orderNumber},</if>
+            <if test="borrowMoney != null">#{borrowMoney},</if>
+            <if test="borrowName != null">#{borrowName},</if>
+            <if test="pledgeMoney != null">#{pledgeMoney},</if>
+            <if test="pledgeName != null">#{pledgeName},</if>
+            <if test="deadline != null">#{deadline},</if>
+            <if test="forcePrice != null">#{forcePrice},</if>
+            <if test="pledgeRate != null">#{pledgeRate},</if>
+            <if test="hrRate != null">#{hrRate},</if>
+            <if test="dayRate != null">#{dayRate},</if>
+            <if test="feeMoney != null">#{feeMoney},</if>
+            <if test="totalMoney != null">#{totalMoney},</if>
+            <if test="totalIncurDebts != null">#{totalIncurDebts},</if>
+            <if test="predictRefundMoney != null">#{predictRefundMoney},</if>
+            <if test="refundPrice != null">#{refundPrice},</if>
+            <if test="creationTime != null">#{creationTime},</if>
+            <if test="expireTime != null">#{expireTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="status != null">#{status},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTPledgeOrder" parameterType="TPledgeOrder">
+        update t_pledge_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="memberId != null">member_id = #{memberId},</if>
+            <if test="orderNumber != null">order_number = #{orderNumber},</if>
+            <if test="borrowMoney != null">borrow_money = #{borrowMoney},</if>
+            <if test="borrowName != null">borrow_name = #{borrowName},</if>
+            <if test="pledgeMoney != null">pledge_money = #{pledgeMoney},</if>
+            <if test="pledgeName != null">pledge_name = #{pledgeName},</if>
+            <if test="deadline != null">deadline = #{deadline},</if>
+            <if test="forcePrice != null">force_price = #{forcePrice},</if>
+            <if test="pledgeRate != null">pledge_rate = #{pledgeRate},</if>
+            <if test="hrRate != null">hr_rate = #{hrRate},</if>
+            <if test="dayRate != null">day_rate = #{dayRate},</if>
+            <if test="feeMoney != null">fee_money = #{feeMoney},</if>
+            <if test="totalMoney != null">total_money = #{totalMoney},</if>
+            <if test="totalIncurDebts != null">total_incur_debts = #{totalIncurDebts},</if>
+            <if test="predictRefundMoney != null">predict_refund_money = #{predictRefundMoney},</if>
+            <if test="refundPrice != null">refund_price = #{refundPrice},</if>
+            <if test="creationTime != null">creation_time = #{creationTime},</if>
+            <if test="expireTime != null">expire_time = #{expireTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTPledgeOrderById" parameterType="String">
+        delete from t_pledge_order where id = #{id}
+    </delete>
+
+    <delete id="deleteTPledgeOrderByIds" parameterType="String">
+        delete from t_pledge_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

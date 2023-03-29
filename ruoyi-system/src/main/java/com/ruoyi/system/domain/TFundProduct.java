@@ -17,7 +17,7 @@ public class TFundProduct extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** ID */
-    private Long id;
+    private String id;
 
     /** 简体名称 */
     @Excel(name = "简体名称")
@@ -79,12 +79,12 @@ public class TFundProduct extends BaseEntity
     @Excel(name = "状态(0停用，1启用)")
     private Integer enabled;
 
-    public void setId(Long id) 
+    public void setId(String id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId()
     {
         return id;
     }

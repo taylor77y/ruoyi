@@ -73,7 +73,7 @@ public class TSmartPoolProductController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:smartPoolProduct:query')")
     @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
+    public AjaxResult getInfo(@PathVariable("id") String id)
     {
         return AjaxResult.success(tSmartPoolProductService.selectTSmartPoolProductById(id));
     }

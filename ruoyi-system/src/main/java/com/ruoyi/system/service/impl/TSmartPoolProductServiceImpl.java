@@ -29,7 +29,7 @@ public class TSmartPoolProductServiceImpl implements ITSmartPoolProductService
      * @return 【请填写功能名称】
      */
     @Override
-    public TSmartPoolProduct selectTSmartPoolProductById(Long id)
+    public TSmartPoolProduct selectTSmartPoolProductById(String id)
     {
         return tSmartPoolProductMapper.selectTSmartPoolProductById(id);
     }

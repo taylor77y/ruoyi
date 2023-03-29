@@ -17,7 +17,7 @@ public interface TSmartPoolProductMapper
      * @param id 【请填写功能名称】主键
      * @return 【请填写功能名称】
      */
-    public TSmartPoolProduct selectTSmartPoolProductById(Long id);
+    public TSmartPoolProduct selectTSmartPoolProductById(String id);
 
     /**
      * 查询【请填写功能名称】列表

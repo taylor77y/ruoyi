@@ -19,7 +19,7 @@ public class TSmartPoolOrder extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** ID */
-    private Long id;
+    private String id;
 
     /** 订单号（时间+6位随机数） */
     @Excel(name = "订单号", readConverterExp = "时=间+6位随机数")
@@ -27,7 +27,7 @@ public class TSmartPoolOrder extends BaseEntity
 
     /** 基金产品Id */
     @Excel(name = "矿机产品Id")
-    private Long productId;
+    private String productId;
 
     /** 会员id */
     @Excel(name = "会员id")
@@ -120,12 +120,12 @@ public class TSmartPoolOrder extends BaseEntity
         this.UName = UName;
     }
 
-    public void setId(Long id)
+    public void setId(String id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId()
     {
         return id;
     }
@@ -139,11 +139,11 @@ public class TSmartPoolOrder extends BaseEntity
         return orderNumber;
     }
 
-    public Long getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(Long productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 

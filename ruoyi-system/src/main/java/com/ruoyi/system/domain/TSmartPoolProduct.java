@@ -17,7 +17,7 @@ public class TSmartPoolProduct extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** ID */
-    private Long id;
+    private String id;
 
     /** 简体名称 */
     @Excel(name = "简体名称")
@@ -89,12 +89,12 @@ public class TSmartPoolProduct extends BaseEntity
         this.detail = detail;
     }
 
-    public void setId(Long id)
+    public void setId(String id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId()
     {
         return id;
     }

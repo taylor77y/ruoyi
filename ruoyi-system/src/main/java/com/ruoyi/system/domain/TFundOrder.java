@@ -19,7 +19,7 @@ public class TFundOrder extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** ID */
-    private Long id;
+    private String id;
 
     /** 订单号（时间+6位随机数） */
     @Excel(name = "订单号", readConverterExp = "时=间+6位随机数")
@@ -27,7 +27,7 @@ public class TFundOrder extends BaseEntity
 
     /** 基金产品Id */
     @Excel(name = "基金产品Id")
-    private Long fundProductId;
+    private String fundProductId;
 
     /** 会员id */
     @Excel(name = "会员id")
@@ -110,12 +110,12 @@ public class TFundOrder extends BaseEntity
         this.UName = UName;
     }
 
-    public void setId(Long id)
+    public void setId(String id)
     {
         this.id = id;
     }
 
-    public Long getId() 
+    public String getId()
     {
         return id;
     }
@@ -128,12 +128,12 @@ public class TFundOrder extends BaseEntity
     {
         return orderNumber;
     }
-    public void setFundProductId(Long fundProductId) 
+    public void setFundProductId(String fundProductId)
     {
         this.fundProductId = fundProductId;
     }
 
-    public Long getFundProductId() 
+    public String getFundProductId()
     {
         return fundProductId;
     }
