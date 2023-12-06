@@ -28,7 +28,7 @@ public class TPeOrder extends BaseEntity
     private String member;
 
     /** 形目名称 */
-    @Excel(name = "形目名称")
+    @Excel(name = "pe项目名称")
     private String peName;
 
     /** 单价 */

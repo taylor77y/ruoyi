@@ -65,7 +65,7 @@ public class TSysBalance extends BaseEntity
     private BigDecimal raiseBalance;
 
     /** 恋上资产 */
-    @Excel(name = "恋上资产")
+    @Excel(name = "链上资产")
     private BigDecimal chainBalance;
 
     /** 备注 */

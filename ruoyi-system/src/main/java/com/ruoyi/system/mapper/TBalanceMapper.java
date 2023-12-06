@@ -64,4 +64,6 @@ public interface TBalanceMapper {
     List<TBalance> selectTBalanceUid(Object uid);
 
     TBalance getBalanceByUserIdWithPairsName(@Param("uid") String uid, @Param("pairsName") String pairsName);
+
+    TBalance findBalanceByUserId(@Param("user_id")String memberId, @Param("currency")String currency);
 }

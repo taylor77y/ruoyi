@@ -1,10 +1,13 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.system.domain.TBalance;
 import com.ruoyi.system.domain.TBalanceRecord;
+import com.ruoyi.system.mapper.TBalanceMapper;
 import com.ruoyi.system.mapper.TBalanceRecordMapper;
 import com.ruoyi.system.mapper.TMemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +112,8 @@ public class TMemberRechargeServiceImpl implements ITMemberRechargeService
     private TMemberMapper tMemberMapper;
     @Autowired
     private TBalanceRecordMapper tBalanceRecordMapper;
+    @Autowired
+    private TBalanceMapper tBalanceMapper;
     @Override
     @Transactional
     public AjaxResult rechargeAudit(Integer type, Long id) {
@@ -117,6 +122,12 @@ public class TMemberRechargeServiceImpl implements ITMemberRechargeService
             return AjaxResult.error("订单已处理，请勿重复操作");
         }
         if (type == 1){
+            TBalance balance=tBalanceMapper.findBalanceByUserId(recharge.getMemberId(),recharge.getCurrency());
+            if (balance!=null){
+                balance.setAssetsBalance(balance.getAssetsBalance().add(recharge.getAmount()));
+                balance.setUpdateTime(new Date());
+                tBalanceMapper.updateTBalance(balance);
+            }
             TBalanceRecord tBalanceRecord = new TBalanceRecord();
             tBalanceRecord.setMemberId(recharge.getMemberId());
             tBalanceRecord.setCurrency(recharge.getCurrency());

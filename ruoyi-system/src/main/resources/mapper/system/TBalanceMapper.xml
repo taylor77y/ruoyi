@@ -147,4 +147,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectTBalanceVo"/>
         where b.id = #{uid} and a.currency = #{pairsName}
     </select>
+
+    <select id="findBalanceByUserId" resultMap="TBalanceResult">
+      select  * from t_balance  WHERE user_id =#{user_id} and currency =#{currency}
+    </select>
 </mapper>
