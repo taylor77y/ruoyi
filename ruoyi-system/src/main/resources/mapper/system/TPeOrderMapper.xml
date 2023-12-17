@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectTPeOrderById" parameterType="String" resultMap="TPeOrderResult">
         <include refid="selectTPeOrderVo"/>
-        where id = #{id}
+        where a.id = #{id}
     </select>
         
     <insert id="insertTPeOrder" parameterType="TPeOrder">
