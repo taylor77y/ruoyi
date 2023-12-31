@@ -28,3 +28,9 @@ npm run build:stage
 # 构建生产环境
 npm run build:prod
 ```
+
+
+## 后端ruoyi-admin.jar 部署说明：
+### 1、application.yml 图片上传路径修改 profile: /www/wwwroot/image1.bityou.cc/ruoyi
+### 2、logback.xml 日志路径修改 value="/www/wwwlogs/ruoyi/logs"
+### 3、CommonController 加载图片路径的修改 http://image1.bityou.cc/ruoyi
