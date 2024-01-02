@@ -393,8 +393,9 @@
       <el-table-column label="归属员工" align="center" prop="sysName"/>
       <el-table-column label="手机号" align="center" prop="phone" width="100"/>
       <el-table-column label="UUID" align="center" prop="uuid" width="100"/>
-      <el-table-column label="邮箱" align="center" prop="mail" width="200"/>
-      <el-table-column label="昵称" align="center" prop="nickName" width="200"/>
+      <el-table-column label="邮箱" align="center" prop="mail" width="100"/>
+      <el-table-column label="账号" align="center" prop="account" width="100"/>
+      <el-table-column label="昵称" align="center" prop="nickName" width="100"/>
       <el-table-column label="头像" align="center" prop="handLink" width="100">
         <template slot-scope="scope">
           <image-preview :src="pathImg + scope.row.handLink" :width="50" :height="50"/>
@@ -466,8 +467,8 @@
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="上次登录IP" align="center" prop="lastLoginIp" width="140">
         <template slot-scope="scope">
-          <span v-if="scope.row.lastLoginIp == ''">暂无IP</span>
-          <!-- <span v-else>{{scope.row.lastLoginIp.split(",")[0]}}</span> -->
+          <span v-if="scope.row.lastLoginIp == '' || scope.row.lastLoginIp == null">暂无IP</span>
+          <span v-else>{{scope.row.lastLoginIp.split(",")[0]}}</span>
         </template>
       </el-table-column>
       <el-table-column label="注册时间" align="center" prop="createTime" width="180">
