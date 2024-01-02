@@ -57,6 +57,10 @@ public class TMember extends BaseEntity
     @Excel(name = "账号类型:INTERNAL内部的,EXTERNAL外部的")
     private String type;
 
+    /** 账号 */
+    @Excel(name = "账号")
+    private String account;
+
     /** 姓名 */
     @Excel(name = "姓名")
     private String uname;
@@ -279,7 +283,16 @@ public class TMember extends BaseEntity
     {
         return type;
     }
-    public void setUname(String uname) 
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public void setUname(String uname)
     {
         this.uname = uname;
     }
@@ -649,6 +662,7 @@ public class TMember extends BaseEntity
             .append("welCode", getWelCode())
             .append("payPassword", getPayPassword())
             .append("type", getType())
+            .append("account", getAccount())
             .append("uname", getUname())
             .append("sex", getSex())
             .append("birth", getBirth())

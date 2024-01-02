@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="phone"    column="phone"    />
         <result property="uuid"    column="uuid"    />
+        <result property="account"    column="account"    />
         <result property="mail"    column="mail"    />
         <result property="password"    column="password"    />
         <result property="welMember"    column="wel_member"    />
